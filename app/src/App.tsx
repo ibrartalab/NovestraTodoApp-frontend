@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<HomePage/>} />
         <Route path="/signup" element={<SignupPage/>} />
         <Route path="/login" element={<LoginPage/>} />
-        <Route path="/dashbaord" element={<UserDashbaord/>} />
+        <Route path="/dashboard/:activeTab" element={<UserDashbaord/>} />
       </Routes>
       </Suspense>
     </BrowserRouter>
