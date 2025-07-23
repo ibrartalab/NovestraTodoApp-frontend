@@ -14,7 +14,7 @@ interface ButtonProps {
 const Button:React.FC<ButtonProps> = ({ title, disabled,children,styleClass, onClick,type}) => {
     return (
         <button type={type} onClick={onClick} disabled={disabled}
-        className={`bg-button_color-black  text-sm font-medium min-w-4 min-h-4 p-4 ${styleClass}`}
+        className={`bg-button_color-black  text-xs font-normal min-w-4 min-h-4 ${styleClass}`}
         >
             {title}
             {children}
