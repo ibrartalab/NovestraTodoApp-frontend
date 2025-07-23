@@ -1,6 +1,6 @@
 import { Layout } from "../components/Layout";
 import { DetailsTodos } from "../components/dashboard/DetailsTodos";
-import { Todos } from "../components/dashboard/Todos";
+import { Todos } from "../components/dashboard/TodoList";
 import { Menu } from "../components/dashboard/Menu";
 
 const Dashboard = () => {
