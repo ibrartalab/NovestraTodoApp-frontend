@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend.DTOs;
 using backend.Services;
 
-namespace MyProjectFolder.Controllers
+namespace backend.Controllers
 {
     [Route("api/[controller]")] // Base route: /api/Auth
     [ApiController]
@@ -27,7 +27,7 @@ namespace MyProjectFolder.Controllers
             }
 
             // After successful registration, log them in and return a token
-            var authResponse = await _userService.Login(new LoginRequest { Username = request.Username, Password = request.Password });
+            var authResponse = await _userService.Register(new RegisterRequest { FirstName = request.FirstName,LastName = request.LastName,Username = request.Username, Password = request.Password });
             if (authResponse == null)
             {
                 // This case should ideally not happen if registration was successful

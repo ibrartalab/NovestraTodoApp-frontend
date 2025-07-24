@@ -1,5 +1,6 @@
 import { BrowserRouter,Routes,Route } from 'react-router'
 import { lazy, Suspense} from 'react'
+import { TodosContext } from './context/todosContext'
 // This is the main application file where we set up routing and lazy loading of components
 // The Suspense component is used to handle loading states for lazy-loaded components
 
@@ -10,8 +11,15 @@ const UserDashbaord = lazy(() => import("./pages/Dashboard"));
 
 function App() {
 
+
+
   return (
     <>
+    <TodosContext.Provider value={{
+      todos: [],
+      setTodos: () => {
+      },
+    }}>
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
       <Routes>
@@ -22,6 +30,7 @@ function App() {
       </Routes>
       </Suspense>
     </BrowserRouter>
+    </TodosContext.Provider>
     </>
   )
 }

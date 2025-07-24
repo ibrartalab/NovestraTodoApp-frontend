@@ -38,6 +38,8 @@ namespace backend.Services
                 var newUser = new User
                 {
                     Id = _users.Count > 0 ? _users.Max(u => u.Id) + 1 : 1, // Simple ID generation
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
                     Username = request.Username,
                     PasswordHash = passwordHash
                 };
@@ -59,7 +61,7 @@ namespace backend.Services
             // Generate JWT token
             var token = GenerateJwtToken(user);
 
-            return new AuthResponse { Username = user.Username, Token = token };
+            return new AuthResponse {FirstName= user.FirstName,LastName=user.LastName, Username = user.Username, Token = token };
         }
 
         private string GenerateJwtToken(User user)

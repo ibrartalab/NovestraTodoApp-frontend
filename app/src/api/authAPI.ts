@@ -2,7 +2,7 @@ import apiClient from "./APIClient";
 
 
 export interface AuthInput {
-    email: string;
+    username: string;
     password: string;
 }
 

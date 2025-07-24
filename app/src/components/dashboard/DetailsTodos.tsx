@@ -1,8 +1,28 @@
 import React from "react";
 import Input from "../InputField";
 import Button from "../Button";
+import { addTodo } from "../../api/todosAPI";
 
 export const DetailsTodos = () => {
+  const [taskName, setTaskName] = React.useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Logic to handle input change
+    const {value} = event.target;
+    setTaskName(value);
+
+  }
+  const handleAddTask = () => {
+    // Logic to add a new task
+    if (taskName.trim() === "") {
+      alert("Task name cannot be empty");
+      return;
+    }
+    // Here you would typically call a function to add the task to your state or backend
+    const response = addTodo({ title: taskName, isCompleted: false });
+    console.log("Task added:", response);
+  };
+  
   return (
     <div className="todo-list-wrapper w-full h-full">
       <div className="todo-list-container mt-8 px-10">
@@ -13,15 +33,15 @@ export const DetailsTodos = () => {
             placeholder="Enter task name"
             type="text"
             name="newTask"
-            value=""
-            onChange={() => {}}
+            value={taskName}
+            onChange={handleInputChange}
             styleClass="w-full h-10 border-none outline-none"
             error={false}
           />
           <Button
             title="Add Task"
             disabled={false}
-            onClick={() => {}}
+            onClick={handleAddTask}
             styleClass="w-24 h-10 flex justify-center items-center rounded-md bg-indigo-600 text-white text-xs hover:bg-indigo-400"
             type="button"
           />
@@ -40,6 +60,7 @@ export const DetailsTodos = () => {
     </div>
   );
 };
+
 
 function KPI({ title, value }: { title: string; value: number }) {
   return (
