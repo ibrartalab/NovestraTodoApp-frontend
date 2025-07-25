@@ -1,21 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-import { type AuthInput,type AuthResponse,login as apiLogin,signUp as apiSignup} from "../api/authAPI";
+import { type AuthLoginInput,type AuthSignupInput,type AuthResponse,login as apiLogin,signUp as apiSignup} from "../api/authAPI";
+
 
 export function useAuth() {
-    const [user, setUser] = useState<AuthResponse['username']| null>(null);
+    
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     // Function to check if user is logged in
-    const login  = async (input:AuthInput): Promise<AuthResponse | null> => {
+    const login  = async (input:AuthLoginInput): Promise<AuthResponse | null> => {
         setLoading(true);
         setError(null);
         try {
-            const data = await apiLogin(input);
-            localStorage.setItem("token",data?.token); // Store token in local storage
-            setUser(data?.username);
-            return data;
+            const response = await apiLogin(input);
+            localStorage.setItem("token",response.data?.token); // Store token in local storage
+            localStorage.setItem("username", response.data?.username); // Store username in local storage
+            // Set user context after successful login
+            if (!response.data.username) {
+                throw new Error("Username is required");
+            }
+            
+            return {
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                username: response.data.username,
+                token: response.data.token,
+                statusCode: response.status,
+            };
         } catch (err: unknown) {
             // Handle error response
             setError("Login failed. Please check your credentials.");
@@ -25,14 +37,23 @@ export function useAuth() {
         }
     };
 
-    const signup = async (input:AuthInput): Promise<AuthResponse | null> => {
+    const signup = async (input:AuthSignupInput): Promise<AuthResponse | null> => {
         setLoading(true);
         setError(null);
         try {
-            const data = await apiSignup(input);
-            localStorage.setItem("token", data.token); // Store token in local storage
-            setUser(data.username);
-            return data;
+            const response = await apiSignup(input);
+            localStorage.setItem("token", response.data.token); // Store token in local storage
+            // Set user context after successful signup
+            if (!response.data.username) {
+                throw new Error("Username is required");
+            }
+            return{
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                username: response.data.username,
+                token: response.data.token,
+                statusCode: response.status,
+            };
         } catch (err: unknown) {
             setError("Signup failed. Please check your details.");
             return null;
@@ -57,7 +78,6 @@ export function useAuth() {
     // };
 
     return {
-        user,
         loading,
         error,
         login,

@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import { Link } from "react-router";
 // import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
+import { Loader } from "../components/Loader";
 
 interface LoginFormProps {
   username: string;
@@ -20,7 +21,7 @@ const LoginForm = () => {
   });
 
   // const [showPassword, setShowPassword] = useState(false);
-  const { login } = useAuth();
+  const { login,loading } = useAuth();
 
   const handleInputChange = useMemo(() => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +35,10 @@ const LoginForm = () => {
   //   setShowPassword((prev) => !prev);
   // };
 
+  if(loading){
+    return <Loader />
+  }
+
   const handleLogin = () => {
     // Logic to handle login
     if (formData.username.trim() === "" || formData.password.trim() === "") {
@@ -46,9 +51,11 @@ const LoginForm = () => {
         if (response) {
           console.log("Login successful:", response);
         }
-        if( response === null) {
-          window.location.href = "/signup";
+        if(response?.statusCode === 200) {
+          // Redirect to dashboard or home page after successful login
+          window.location.href = `/dashboard/${response.username}`;
         }
+        
       })
       .catch((error) => {
         console.error("Login failed:", error);
@@ -59,6 +66,7 @@ const LoginForm = () => {
   return (
     <div className="auth-login_form *:w-80 bg-white rounded-lg flex justify-center items-center mt-40">
       <form action="" className="*:w-full" onSubmit={(e) => e.preventDefault()}>
+        <h1 className="text-lg font-medium">Welcom back! Access Your Account</h1>
         <Input
           label="Username"
           type="text"

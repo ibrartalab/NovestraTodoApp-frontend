@@ -2,24 +2,26 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Button from "../Button";
-import { TodosContext } from "../../context/todosContext";
-import { useContext, useEffect } from "react";
-import { getTodos } from "../../api/todosAPI";
+import { useCallback, useEffect, useState } from "react";
+import { getTodos, type AddTodoResponse } from "../../api/todosAPI";
 
 const TodoItem = () => {
-    const { todos,setTodos } = useContext(TodosContext);
-    useEffect(() => {
-        const fetchTodos = async () => {
-            const data = await getTodos();
-            setTodos([...data]);
-        };
+    const [todos,setToDos] = useState<AddTodoResponse[]>([])
+    
+
+    const fetchTodos = useCallback(async () => {
+      const data: AddTodoResponse[] = await getTodos();
+          setToDos(data);
+    },[])
+
+      useEffect(() => {
         fetchTodos();
-    }, [setTodos]);
+      },[fetchTodos])
   return (
     <>
     {todos.map(todo => (
         <tr key={todo.id} className="text-center *:p-4">
-      <td>{todo.title}</td>
+      <td>{todo.name}</td>
       <td>{todo.isCompleted ? "Completed" : "Pending"}</td>
       <td>{Date.now().toString()}</td>
       <td className="flex justify-center items-center gap-2">

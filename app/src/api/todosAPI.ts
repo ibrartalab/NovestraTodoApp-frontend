@@ -2,15 +2,15 @@ import apiClient from "./APIClient";
 
 interface AddTodoInput {
     // id: number;
-    title: string;
+    name: string;
     isCompleted: boolean;
 }
 
 
 
-interface AddTodoResponse {
+export interface AddTodoResponse {
     id: number;
-    title: string;
+    name: string;
     isCompleted: boolean;
 }
 

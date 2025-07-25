@@ -1,18 +1,20 @@
-import React, { useEffect} from 'react'
+import React, { useContext, useEffect} from 'react'
 import { SearchBar } from './SearchBar'
+import {UserContext}  from '../../context/UserContext';
 
 export const Menu = () => {
     const [greeting, setGreeting] = React.useState<string>("");
-    const userName = "User";
+    const {user} = useContext(UserContext);
+    console.log("User in Menu:", user);
 
     useEffect(()=>{
         const currentHour = new Date().getHours();
         if(currentHour < 12) {
-            setGreeting(`Good Morning ${userName}`);
+            setGreeting(`Good Morning ${user}`);
         } else if(currentHour < 18) {
-            setGreeting(`Good Afternoon ${userName}`);
+            setGreeting(`Good Afternoon ${user}`);
         } else {
-            setGreeting(`Good Evening ${userName}`);
+            setGreeting(`Good Evening ${user}`);
         }
     },[])
   return (

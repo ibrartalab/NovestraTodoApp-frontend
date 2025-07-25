@@ -1,26 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import Input from "../InputField";
 import Button from "../Button";
 import { addTodo } from "../../api/todosAPI";
+import { TodosContext } from "../../context/TodosContext";
 
 export const DetailsTodos = () => {
-  const [taskName, setTaskName] = React.useState("");
+  const [todoName, setTodoName] = React.useState("");
+  let {currentState,} = useContext(TodosContext);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Logic to handle input change
     const {value} = event.target;
-    setTaskName(value);
+    setTodoName(value);
+    
 
   }
   const handleAddTask = () => {
     // Logic to add a new task
-    if (taskName.trim() === "") {
+    if (todoName.trim() === "") {
       alert("Task name cannot be empty");
       return;
     }
     // Here you would typically call a function to add the task to your state or backend
-    const response = addTodo({ title: taskName, isCompleted: false });
-    console.log("Task added:", response);
+    const response = addTodo({ name: todoName, isCompleted: false });
+    setTodoName("")
+    ;
+    console.log("Task added:", response,currentState);
   };
   
   return (
@@ -32,8 +37,8 @@ export const DetailsTodos = () => {
             label=""
             placeholder="Enter task name"
             type="text"
-            name="newTask"
-            value={taskName}
+            name="todoName"
+            value={todoName}
             onChange={handleInputChange}
             styleClass="w-full h-10 border-none outline-none"
             error={false}

@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 
 interface TodoContextType {
+    currentState:number,
     todos: Array<{
         id: number;
         title: string;
@@ -14,6 +15,7 @@ interface TodoContextType {
 }
 
 export const TodosContext = createContext<TodoContextType>({
+    currentState:0,
     todos: [],
     setTodos: () => {},
 });

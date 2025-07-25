@@ -1,25 +1,36 @@
 import apiClient from "./APIClient";
 
 
-export interface AuthInput {
+export interface AuthLoginInput {
+    username: string;
+    password: string;
+
+}
+
+export interface AuthSignupInput {
+    firstName: string;
+    lastName: string;
     username: string;
     password: string;
 }
 
 export interface AuthResponse {
+    firstName: string;
+    lastName: string;
     username: string;
     token: string;
+    statusCode: number;
 }
 
 // Function to handle user login
-export async function login(data: AuthInput){
-    const response = await apiClient.post<AuthResponse>("/auth/login", data);
-    return response.data;
+export async function login(data: AuthLoginInput){
+    const response = await apiClient.post<AuthResponse>("/Auth/login", data);
+    return response;
 };
 // Function to handle user signup
-export async function signUp(data: AuthInput) {
-    const response = await apiClient.post<AuthResponse>("/auth/signup", data);
-    return response.data;
+export async function signUp(data: AuthSignupInput) {
+    const response = await apiClient.post<AuthResponse>("/Auth/register", data);
+    return response;
 }
 // Function to handle user logout
 export async function logout() {

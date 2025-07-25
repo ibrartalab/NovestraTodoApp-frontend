@@ -51,17 +51,20 @@ namespace backend.Services
 
         public async Task<AuthResponse?> Login(LoginRequest request)
         {
-            var user = _users.FirstOrDefault(u => u.Username == request.Username);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            return await Task.Run(() =>
             {
-                return null; // Invalid credentials
-            }
+                var user = _users.FirstOrDefault(u => u.Username == request.Username);
 
-            // Generate JWT token
-            var token = GenerateJwtToken(user);
+                if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+                {
+                    return null; // Invalid credentials
+                }
 
-            return new AuthResponse {FirstName= user.FirstName,LastName=user.LastName, Username = user.Username, Token = token };
+                // Generate JWT token
+                var token = GenerateJwtToken(user);
+
+                return new AuthResponse { FirstName = user.FirstName, LastName = user.LastName, Username = user.Username, Token = token };
+            });
         }
 
         private string GenerateJwtToken(User user)
