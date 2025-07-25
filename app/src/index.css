@@ -16,4 +16,12 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+.todos-list-wrapper{
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.todos-list-wrapper::-webkit-scrollbar{
+  display: none;
+}
 

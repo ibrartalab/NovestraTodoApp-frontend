@@ -1,6 +1,6 @@
 import { BrowserRouter,Routes,Route } from 'react-router'
 import { lazy, Suspense} from 'react'
-import { TodosContext } from './context/TodosContext';
+import TodosProvider  from './context/TodosContext';
 import { Loader } from './components/Loader';
 import UserProvider from './context/UserContext';
 
@@ -14,15 +14,13 @@ const UserDashbaord = lazy(() => import("./pages/Dashboard"));
 
 function App() {
 
+  // const [todos,SetTodos] = useState<[]>([]);
+ 
+
   return (
     <>
     <UserProvider>
-    <TodosContext.Provider value={{
-      todos: [],
-      setTodos: () => {
-      },
-      currentState:0
-    }}>
+    <TodosProvider>
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
       <Routes>
@@ -33,7 +31,7 @@ function App() {
       </Routes>
       </Suspense>
     </BrowserRouter>
-    </TodosContext.Provider>
+    </TodosProvider>
     </UserProvider>
     </>
   )

@@ -1,20 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Input from "../InputField";
 import Button from "../Button";
 import { addTodo } from "../../api/todosAPI";
-import { TodosContext } from "../../context/TodosContext";
+import { TodoContext } from "../../context/TodosContext";
 
-export const DetailsTodos = () => {
+export const DashboardView = () => {
   const [todoName, setTodoName] = React.useState("");
-  let {currentState,} = useContext(TodosContext);
+  const {
+    totalTodos,
+    totalTodosCompleted,
+    totalTodosPending,
+    setCurrentState,
+  } = useContext(TodoContext);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Logic to handle input change
-    const {value} = event.target;
+    const { value } = event.target;
     setTodoName(value);
-    
+  };
 
-  }
   const handleAddTask = () => {
     // Logic to add a new task
     if (todoName.trim() === "") {
@@ -22,12 +26,11 @@ export const DetailsTodos = () => {
       return;
     }
     // Here you would typically call a function to add the task to your state or backend
-    const response = addTodo({ name: todoName, isCompleted: false });
-    setTodoName("")
-    ;
-    console.log("Task added:", response,currentState);
+    const response = addTodo({ name: todoName, isComplete: false });
+    setCurrentState((prev) => prev + 1);
+    setTodoName("");
   };
-  
+
   return (
     <div className="todo-list-wrapper w-full h-full">
       <div className="todo-list-container mt-8 px-10">
@@ -53,11 +56,11 @@ export const DetailsTodos = () => {
         </div>
         <div className="KPI-cardas flex flex-col gap-4 mt-6">
           <div className="row-1 flex gap-4">
-            <KPI title="Total Tasks" value={10} />
-            <KPI title="Completed Tasks" value={5} />
+            <KPI title="Total Tasks" value={totalTodos} />
+            <KPI title="Completed Tasks" value={totalTodosCompleted} />
           </div>
           <div className="row-2 flex gap-4">
-            <KPI title="Pending Tasks" value={3} />
+            <KPI title="Pending Tasks" value={totalTodosPending} />
             <KPI title="Overdue Tasks" value={2} />
           </div>
         </div>
@@ -65,7 +68,6 @@ export const DetailsTodos = () => {
     </div>
   );
 };
-
 
 function KPI({ title, value }: { title: string; value: number }) {
   return (

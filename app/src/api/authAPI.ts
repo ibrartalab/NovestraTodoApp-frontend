@@ -33,7 +33,9 @@ export async function signUp(data: AuthSignupInput) {
     return response;
 }
 // Function to handle user logout
-export async function logout() {
-    const response = await apiClient.post("/auth/logout");
-    return response.data;
-}
+// export async function logout() {
+//     localStorage.removeItem('token');
+//     localStorage.removeItem('username');
+
+//     window.location.href = '/login';
+// }

@@ -1,5 +1,5 @@
 import { Layout } from "../components/Layout";
-import { DetailsTodos } from "../components/dashboard/DetailsTodos";
+import { DashboardView } from "../components/dashboard/DashboardView";
 import TodoList from "../components/dashboard/TodoList";
 import { Menu } from "../components/dashboard/Menu";
 
@@ -10,7 +10,7 @@ const Dashboard = () => {
         <Menu />
         <div className="dashboard-internal-layer w-full h-80 flex gap-4">
           <TodoList />
-          <DetailsTodos />
+          <DashboardView />
         </div>
       </div>
     </Layout>

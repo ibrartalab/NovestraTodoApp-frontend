@@ -3,7 +3,7 @@ import apiClient from "./APIClient";
 interface AddTodoInput {
     // id: number;
     name: string;
-    isCompleted: boolean;
+    isComplete: boolean;
 }
 
 
@@ -11,7 +11,7 @@ interface AddTodoInput {
 export interface AddTodoResponse {
     id: number;
     name: string;
-    isCompleted: boolean;
+    isComplete: boolean;
 }
 
 export async function addTodo(data: AddTodoInput){
@@ -21,7 +21,7 @@ export async function addTodo(data: AddTodoInput){
 
 export async function getTodos() {
     const response = await apiClient.get<AddTodoResponse[]>("/TodoItems");
-    return response.data;
+    return response;
 }
 
 export async function updateTodo(id: number, data: Partial<AddTodoInput>) {

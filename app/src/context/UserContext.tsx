@@ -3,12 +3,14 @@ import { createContext, useState, type ReactNode } from "react";
 interface UserContextType {
   user: string;
   setUser: React.Dispatch<React.SetStateAction<string>>;
+  // logout: () => void,
 }
 
 // Create the context with a default empty value
 const UserContext = createContext<UserContextType>({
   user: "",
   setUser: () => {}, // Placeholder function, will be overridden by the Provider
+  // logout: () => {}
 });
 
 // Define the props for UserProvider, including children
@@ -32,6 +34,22 @@ const UserProvider = ({ children }: UserProviderProps) => {
       return "";
     }
   });
+
+    // const logout = useCallback(() => {
+    //   setUser("")
+    // },[setUser]);
+
+  //    useEffect(() => {
+  //   try {
+  //     if (user) {
+  //       localStorage.setItem('username', user);
+  //     } else {
+  //       localStorage.removeItem('username'); // Clear localStorage on logout
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to save user to localStorage:", error);
+  //   }
+  // }, [user]);
 
   return (
     <>
