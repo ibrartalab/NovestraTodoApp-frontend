@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="dashboard-wrapper w-full h-full px-24">
-        <Menu />
+        {/* <Menu /> */}
         <div className="dashboard-internal-layer w-full h-80 flex gap-4">
           <TodoList />
           <DashboardView />

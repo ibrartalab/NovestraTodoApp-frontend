@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Input from "../InputField";
 import Button from "../Button";
 import { addTodo } from "../../api/todosAPI";
 import { TodoContext } from "../../context/TodosContext";
+import { SearchInput } from "./SearchInput";
+import { UserContext } from "../../context/UserContext";
 
 export const DashboardView = () => {
   const [todoName, setTodoName] = React.useState("");
@@ -12,6 +14,21 @@ export const DashboardView = () => {
     totalTodosPending,
     setCurrentState,
   } = useContext(TodoContext);
+
+  const [greeting, setGreeting] = React.useState<string>("");
+    const {user} = useContext(UserContext);
+    console.log("User in Menu:", user);
+
+    useEffect(()=>{
+        const currentHour = new Date().getHours();
+        if(currentHour < 12) {
+            setGreeting(`Good Morning ${user}`);
+        } else if(currentHour < 18) {
+            setGreeting(`Good Afternoon ${user}`);
+        } else {
+            setGreeting(`Good Evening ${user}`);
+        }
+    },[user])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Logic to handle input change
@@ -34,6 +51,13 @@ export const DashboardView = () => {
 
   return (
     <div className="todo-list-wrapper w-full h-full">
+      <div className='menu w-full h-20 flex items-center justify-between px-8'>
+              <div className="greeting">
+                  <h1 className="text-lg font-medium">{greeting || "Welcome"}</h1>
+                  <p className="text-gray-600 text-sm">Whats your plan for today?</p>
+              </div>
+              {/* <SearchInput /> */}
+          </div>
       <div className="todo-list-container mt-8 px-10">
         <h2>Todo List</h2>
         <div className="input-todo-add flex justify-between items-center gap-4">

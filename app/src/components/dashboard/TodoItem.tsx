@@ -5,11 +5,16 @@ import Button from "../Button";
 import { useContext } from "react";
 import { TodoContext } from "../../context/TodosContext";
 import { updateTodo, type UpdateTodoInput } from "../../api/todosAPI";
+import { SearchContext } from "../../context/SearchContext";
 
 
 const TodoItem = () => {
   // const [todos, setToDos] = useState<AddTodoResponse[]>([]);
-  const { todos,setTodos,fetchTodos } = useContext(TodoContext);
+  const { todos,fetchTodos } = useContext(TodoContext);
+  const {searchParam} = useContext(SearchContext);
+
+  const searchedTodo = todos.filter(todo => todo.name.toLowerCase().includes(searchParam))
+
 
   const today = new Date();
   const fullDate = today.toLocaleDateString("en-US", {
@@ -37,14 +42,20 @@ const TodoItem = () => {
     
   };
 
+
+  // useEffect(() => {
+  //   const updated = todos.filter(f => f.name === onSearchTodos)
+  //   console.log(updated,onSearchTodos)
+  // },[todos,onSearchTodos])
+
   return (
     <>
-      {todos.map((todo) => (
-        <tr key={todo.id} className="*:text-center *:text-xs *:font-medium">
-          <td>{todo.name}</td>
-          <td>{todo.isComplete ? "Completed" : "Pending"}</td>
-          <td>{fullDate}</td>
-          <td className="flex justify-center items-center gap-2">
+      {searchedTodo.map((todo) => (
+        <div key={todo.id} className="flex justify-between items-center *:p-2  *:text-left *:text-xs *:font-medium">
+          <div className="min-w-24">{todo.name}</div>
+          <div>{todo.isComplete ? "Completed" : "Pending"}</div>
+          <div>{fullDate}</div>
+          <div className="flex justify-center items-center gap-2">
             <Button
               title=""
               onClick={() => {}}
@@ -71,8 +82,8 @@ const TodoItem = () => {
             >
               <IoMdCheckmarkCircleOutline className="text-lg text-green-500" />
             </Button>
-          </td>
-        </tr>
+          </div>
+        </div>
       ))}
     </>
   );

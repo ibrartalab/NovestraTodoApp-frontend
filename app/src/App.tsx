@@ -3,6 +3,7 @@ import { lazy, Suspense} from 'react'
 import TodosProvider  from './context/TodosContext';
 import { Loader } from './components/Loader';
 import UserProvider from './context/UserContext';
+import SearchContextProvider from './context/SearchContext';
 
 // This is the main application file where we set up routing and lazy loading of components
 // The Suspense component is used to handle loading states for lazy-loaded components
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <>
+    <SearchContextProvider>
     <UserProvider>
     <TodosProvider>
     <BrowserRouter>
@@ -33,6 +35,7 @@ function App() {
     </BrowserRouter>
     </TodosProvider>
     </UserProvider>
+    </SearchContextProvider>
     </>
   )
 }
