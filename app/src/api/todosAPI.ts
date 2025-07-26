@@ -6,7 +6,11 @@ interface AddTodoInput {
     isComplete: boolean;
 }
 
-
+export interface UpdateTodoInput{
+    id: number;
+    name: string;
+    isComplete: boolean;
+}
 
 export interface AddTodoResponse {
     id: number;
@@ -24,8 +28,8 @@ export async function getTodos() {
     return response;
 }
 
-export async function updateTodo(id: number, data:AddTodoInput) {
-    const response = await apiClient.put<AddTodoResponse>(`/TodoItems/${id}`,data);
+export async function updateTodo(id: number, data:UpdateTodoInput) {
+    const response = await apiClient.put<void>(`/TodoItems/${id}`,data);
     return response;
 }
 

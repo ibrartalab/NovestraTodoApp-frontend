@@ -3,7 +3,7 @@ import TodoItem from "./TodoItem";
 const TodoList = () => {
   return (
     <div className="sidebar w-4/5 h-96">
-      <aside className="todos-wrapper w-full h-full flex flex-col justify-start items-start gap-">
+      <aside className="todos-wrapper w-full h-full flex flex-col">
         <h2>Todos</h2>
         <div className="Header w-full flex justify-between text-sm font-medium  p-4 mt-4 border-collapse border bg-white">
             <div>Todo Name</div>
@@ -21,7 +21,7 @@ const TodoList = () => {
                 <th>Actions</th>
               </tr>
             </thead> */}
-            <tbody className="text-center *:text-sm *:font-normal *:border *:border-gray-300  ">
+            <tbody className="*:border *:border-gray-300">
               <TodoItem />
             </tbody>
           </table>

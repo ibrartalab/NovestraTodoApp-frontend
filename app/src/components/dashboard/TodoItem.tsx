@@ -2,24 +2,14 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Button from "../Button";
-import { useContext, useEffect } from "react";
-
+import { useContext } from "react";
 import { TodoContext } from "../../context/TodosContext";
-import { updateTodo } from "../../api/todosAPI";
+import { updateTodo, type UpdateTodoInput } from "../../api/todosAPI";
 
-interface UpdateTodosResponse{
-  id:number,
-  name:string,
-  isComplete:boolean
-}
 
-interface UpdateTodoInput{
-  name:string,
-  isComplete:boolean
-}
 const TodoItem = () => {
   // const [todos, setToDos] = useState<AddTodoResponse[]>([]);
-  const { todos,setTodos, fetchTodos } = useContext(TodoContext);
+  const { todos,setTodos,fetchTodos } = useContext(TodoContext);
 
   const today = new Date();
   const fullDate = today.toLocaleDateString("en-US", {
@@ -29,16 +19,16 @@ const TodoItem = () => {
   });
 
   // update to mark is completed logic
-  const handleMarkTodo = async (id:number,todo:string,status:boolean): Promise<UpdateTodosResponse> => {
+  const handleMarkTodo = async (id:number,todo:string,status:boolean): Promise<void> => {
     try {
-      const data:UpdateTodoInput = {
+      const data: UpdateTodoInput = {
+        id:id,
       name: todo,
       isComplete:status
     }
     const response  = await updateTodo(id,data);
-    if(response.status === 201 || response.status === 204){
-      const updatedTodos = todos.filter(d => d.id !== id);
-      setTodos(updatedTodos);
+    if(response.status === 201 || response.status === 204 || response.status === 200){
+      fetchTodos();
     };
     return response.data;
     } catch (error) {
@@ -47,13 +37,10 @@ const TodoItem = () => {
     
   };
 
-  useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
   return (
     <>
       {todos.map((todo) => (
-        <tr key={todo.id} className="text-center *:p-4">
+        <tr key={todo.id} className="*:text-center *:text-xs *:font-medium">
           <td>{todo.name}</td>
           <td>{todo.isComplete ? "Completed" : "Pending"}</td>
           <td>{fullDate}</td>
