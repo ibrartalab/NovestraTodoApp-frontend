@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import Input from "../InputField";
+import Input from "../Input";
 import Button from "../Button";
 import { addTodo } from "../../api/todosAPI";
 import { TodoContext } from "../../context/TodosContext";
@@ -79,11 +79,19 @@ export const Summary = () => {
         </div>
         <div className="KPI-cardas flex flex-col gap-4 mt-6">
           <div className="row-1 flex gap-4">
-            <KPI title="Total Tasks" value={totalTodos} style="text-black"/>
-            <KPI title="Completed Tasks" value={totalTodosCompleted} style="*:text-green-500"/>
+            <KPI title="Total Tasks" value={totalTodos} style="text-black" />
+            <KPI
+              title="Completed Tasks"
+              value={totalTodosCompleted}
+              style="*:text-green-500"
+            />
           </div>
           <div className="row-2 flex gap-4">
-            <KPI title="Pending Tasks" value={totalTodosPending} style="*:text-purple-500"/>
+            <KPI
+              title="Pending Tasks"
+              value={totalTodosPending}
+              style="*:text-purple-500"
+            />
             <KPI title="Overdue Tasks" value={0} style="*:text-red-500" />
           </div>
         </div>
@@ -92,9 +100,19 @@ export const Summary = () => {
   );
 };
 
-function KPI({ title, value,style }: { title: string; value: number,style?:string }) {
+function KPI({
+  title,
+  value,
+  style,
+}: {
+  title: string;
+  value: number;
+  style?: string;
+}) {
   return (
-    <div className={`KPI-card w-1/2 h-20 bg-white rounded-md p-4 flex justify-between items-center ${style}`}>
+    <div
+      className={`KPI-card w-1/2 h-20 bg-white rounded-md p-4 flex justify-between items-center ${style}`}
+    >
       <div className="KPI-title text-lg font-semibold">{title}</div>
       <div className="KPI-value text-2xl font-bold">{value}</div>
     </div>

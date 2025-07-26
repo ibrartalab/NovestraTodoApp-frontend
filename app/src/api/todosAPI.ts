@@ -35,5 +35,5 @@ export async function updateTodo(id: number, data:UpdateTodoInput) {
 
 export async function deleteTodo(id: number) {
     const response = await apiClient.delete(`/TodoItems/${id}`);
-    return response.data;
+    return response;
 }

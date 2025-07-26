@@ -1,12 +1,14 @@
 import { IoSearch } from "react-icons/io5";
-import Input from "../InputField";
+import Input from "../Input";
 import React, { useContext } from "react";
 import { SearchContext } from "../../context/SearchContext";
 
 export const SearchInput = () => {
-  const {searchParam,setSearchParam} = useContext(SearchContext);
+  const { searchParam, setSearchParam } = useContext(SearchContext);
 
-  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSearchParam(event.target.value);
   };
 

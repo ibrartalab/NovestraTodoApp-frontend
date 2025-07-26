@@ -1,8 +1,8 @@
-import { BrowserRouter,Routes,Route } from 'react-router'
-import { lazy, Suspense} from 'react'
+import { BrowserRouter,Routes,Route, Navigate } from 'react-router'
+import { lazy, Suspense, useContext} from 'react'
 import TodosProvider  from './context/TodosContext';
 import { Loader } from './components/Loader';
-import UserProvider from './context/UserContext';
+import UserProvider, { UserContext } from './context/UserContext';
 import SearchContextProvider from './context/SearchContext';
 import ThemeContextProvider from './context/ThemeContext';
 
@@ -15,8 +15,14 @@ const SignupPage = lazy(() => import("./pages/Signup"));
 const UserDashbaord = lazy(() => import("./pages/Dashboard"));
 
 function App() {
-
-  // const [todos,SetTodos] = useState<[]>([]);
+  
+  const PrivateRoutes = ({children}:{children:React.ReactNode}) => {
+    const {user} = useContext(UserContext);
+    if(!user){
+      return <Navigate to={'/login'} replace/>
+    }
+    return <>{children}</>
+  };
  
 
   return (
@@ -31,7 +37,11 @@ function App() {
         <Route path="/" element={<HomePage/>} />
         <Route path="/signup" element={<SignupPage/>} />
         <Route path="/login" element={<LoginPage/>} />
-        <Route path="/dashboard/:username" element={<UserDashbaord/>} />
+        <Route path="/dashboard/:username" element={
+          <PrivateRoutes>
+            <UserDashbaord/>
+          </PrivateRoutes>
+        } />
       </Routes>
       </Suspense>
     </BrowserRouter>
