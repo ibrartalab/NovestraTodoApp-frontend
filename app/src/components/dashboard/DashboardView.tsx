@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Input from "../InputField";
 import Button from "../Button";
 import { addTodo } from "../../api/todosAPI";
@@ -29,6 +29,7 @@ export const DashboardView = () => {
     const response = addTodo({ name: todoName, isComplete: false });
     setCurrentState((prev) => prev + 1);
     setTodoName("");
+    console.log(response)
   };
 
   return (

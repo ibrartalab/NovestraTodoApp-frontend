@@ -5,10 +5,21 @@ import Button from "../Button";
 import { useContext, useEffect } from "react";
 
 import { TodoContext } from "../../context/TodosContext";
+import { updateTodo } from "../../api/todosAPI";
 
+interface UpdateTodosResponse{
+  id:number,
+  name:string,
+  isComplete:boolean
+}
+
+interface UpdateTodoInput{
+  name:string,
+  isComplete:boolean
+}
 const TodoItem = () => {
   // const [todos, setToDos] = useState<AddTodoResponse[]>([]);
-  const { todos, fetchTodos } = useContext(TodoContext);
+  const { todos,setTodos, fetchTodos } = useContext(TodoContext);
 
   const today = new Date();
   const fullDate = today.toLocaleDateString("en-US", {
@@ -17,10 +28,24 @@ const TodoItem = () => {
     day: "numeric",
   });
 
-  // const fetchTodos = useCallback(async () => {
-  //   const data: AddTodoResponse[] = await getTodos();
-  //   setToDos(data);
-  // }, []);
+  // update to mark is completed logic
+  const handleMarkTodo = async (id:number,todo:string,status:boolean): Promise<UpdateTodosResponse> => {
+    try {
+      const data:UpdateTodoInput = {
+      name: todo,
+      isComplete:status
+    }
+    const response  = await updateTodo(id,data);
+    if(response.status === 201 || response.status === 204){
+      const updatedTodos = todos.filter(d => d.id !== id);
+      setTodos(updatedTodos);
+    };
+    return response.data;
+    } catch (error) {
+      console.log(error)
+    }
+    
+  };
 
   useEffect(() => {
     fetchTodos();
@@ -53,7 +78,7 @@ const TodoItem = () => {
 
             <Button
               title=""
-              onClick={() => {}}
+              onClick={() => handleMarkTodo(todo.id,todo.name,todo.isComplete = true)}
               disabled={false}
               styleClass="w-6 h-6 flex justify-center items-center rounded-md bg-indigo-50 hover:bg-indigo-200"
             >

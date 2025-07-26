@@ -24,9 +24,9 @@ export async function getTodos() {
     return response;
 }
 
-export async function updateTodo(id: number, data: Partial<AddTodoInput>) {
-    const response = await apiClient.put<AddTodoResponse>(`/TodoItems/${id}`, data);
-    return response.data;
+export async function updateTodo(id: number, data:AddTodoInput) {
+    const response = await apiClient.put<AddTodoResponse>(`/TodoItems/${id}`,data);
+    return response;
 }
 
 export async function deleteTodo(id: number) {
