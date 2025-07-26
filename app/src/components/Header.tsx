@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const Header = () => {
+  const { theme, setTheme,setText } = useContext(ThemeContext);
+
   return (
     <header className="header flex justify-between items-center px-24 p-4 border-b-2 border-gray-100">
       <h1>Novestra Todo</h1>
@@ -39,11 +42,15 @@ export const Header = () => {
               Register
             </NavLink>
           </li>
-          <li>
-            <MdLightMode />
-          </li>
-          <li>
-            <MdDarkMode />
+          <li className="*:cursor-pointer">
+
+          {theme === "bg-gray-50" ? <MdDarkMode onClick={() => {
+            setTheme('bg-black');
+            setText('text-white');
+          }}/> : <MdLightMode onClick={() => {
+            setTheme('bg-gray-50');
+            setText('text-balck');
+          }}/>}
           </li>
         </ul>
       </nav>
