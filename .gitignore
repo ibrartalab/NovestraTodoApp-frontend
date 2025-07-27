@@ -1,0 +1,17 @@
+# Build artifacts
+bin/
+obj/
+
+# Visual Studio Code
+.vscode/
+
+# Node modules (for React frontend)
+node_modules/
+
+# Environment variables
+.env
+
+# Other common ignore patterns (add as needed)
+*.log
+*.bak
+*.tmp
