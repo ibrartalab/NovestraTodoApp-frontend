@@ -22,9 +22,6 @@ const SignUpForm = () => {
   const [formData, setFormData] = useState<AuthSignupInput>({
     ...initialState,
   });
-  // const [showPassword, setShowPassword] = useState<boolean>(false);
-  // const [showConfirmPassword, setShowConfirmPassword] =
-  //   useState<boolean>(false);
 
   //functions
   const handleInputChange = useMemo(() => {
@@ -34,6 +31,7 @@ const SignUpForm = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     };
   }, []);
+  
   if (loading) {
     return <Loader />;
   }

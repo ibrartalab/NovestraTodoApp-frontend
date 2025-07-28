@@ -39,7 +39,7 @@ const TodoList = () => {
             <div>Actions</div>
           </div>
         <div className="todos-list-wrapper overflow-y-scroll w-full h-full bg-gray-100">
-          <div className="*:border *:border-gray-300">
+          <div className="*:border *:border-gray-300 w-full h-full">
               <TodoItem />
             </div>
         </div>

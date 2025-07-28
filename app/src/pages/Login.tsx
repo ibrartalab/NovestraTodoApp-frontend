@@ -31,10 +31,6 @@ const LoginForm = () => {
     };
   }, []);
 
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword((prev) => !prev);
-  // };
-
   if (loading) {
     return <Loader />;
   }

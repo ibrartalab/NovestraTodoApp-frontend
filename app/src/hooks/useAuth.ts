@@ -62,21 +62,6 @@ export function useAuth() {
         }
     };
 
-    // const logout = () => {
-    //     setLoading(true);
-    //     setError(null);
-    //     try {
-    //        apiLogout(); // Call the API to logout
-    //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //     } catch (err: any) {
-    //         setError("Logout failed. Please try again.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    //     setUser(null);
-    //     localStorage.removeItem("token"); // Remove token from local storage
-    // };
-
     return {
         loading,
         error,

@@ -12,11 +12,6 @@ export const SearchInput = () => {
     setSearchParam(event.target.value);
   };
 
-  // useEffect(() => {
-  //   const updatedTodos = todos.filter(s => s.name === searchParam);
-  //   setOnSearchTodos(updatedTodos)
-  // },[searchParam,setOnSearchTodos,todos])
-
   return (
     <div className="search-bar w-full flex items-center gap-2 border-2 border-gray-200 rounded-md px-2 bg-white">
       <IoSearch className="text-gray-500 text-2xl w-10" />

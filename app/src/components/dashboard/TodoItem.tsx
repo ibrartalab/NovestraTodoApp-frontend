@@ -10,8 +10,6 @@ import {
   type UpdateTodoInput,
 } from "../../api/todosAPI";
 import { SearchContext } from "../../context/SearchContext";
-import Input from "../Input";
-import { MdOutlineCancel } from "react-icons/md";
 import EditTodo from "./EditTodo";
 
 const TodoItem = () => {
@@ -25,7 +23,7 @@ const TodoItem = () => {
   const filterdTodos = todos.filter((todo) => {
     const matchSearch = todo.name.toLowerCase().includes(searchParam);
     let macthState = true;
-    
+
     if (filters === "active") {
       macthState = todo.isComplete === false;
     } else if (filters === "completed") {
@@ -88,36 +86,7 @@ const TodoItem = () => {
 
   return (
     <>
-      {/* {isEditTodo && (
-        <div className="w-full h-full bg-gray-400/60 absolute top-0 left-0 ">
-        <div className="edit-todo absolute top-1/4 left-1/3 m-auto  w-1/3 h-52 z-50 flex justify-between items-center gap-2 bg-white">
-      <MdOutlineCancel className="absolute top-2 right-2 text-2xl cursor-pointer text-indigo-500" onClick={() => setIsEditTodo(false)}/>
-        <div className="w-full h-full flex justify-center items-center gap-2">
-          <div className="w-60 h-20">
-            <Input
-              label="Update Todo"
-              placeholder="Enter task name..."
-              type="text"
-              name="todo"
-              value={newTodo}
-              onChange={handleNewTodoInputChange}
-              styleClass="w-full"
-            />
-          </div>
-          <div className="w-max h-20 flex justify-center items-center">
-            <Button
-              title="Update"
-              onClick={() => 
-                searchedTodo.map(T => handleUpdateTodoContext(T.id,T.name = newTodo,T.isComplete))
-              }
-              disabled={false}
-              styleClass=" flex justify-center items-center w-24 h-10 rounded-md text-white bg-indigo-600 hover:bg-indigo-500"
-            />
-          </div>
-        </div>
-      </div>
-      </div>
-      )} */}
+    {todos.length === 0 && <div className="w-full h-full flex justify-center items-center text-lg font-bold">No data return</div>}
       {filterdTodos.map((todo) => (
         <div
           key={todo.id}
