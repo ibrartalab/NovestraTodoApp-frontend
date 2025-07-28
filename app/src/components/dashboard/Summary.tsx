@@ -41,9 +41,10 @@ export const Summary = () => {
       alert("Task name cannot be empty");
       return;
     }
+    setCurrentState((prev) => prev + 1);
     // Here you would typically call a function to add the task to your state or backend
     const response = addTodo({ name: todoName, isComplete: false });
-    setCurrentState((prev) => prev + 1);
+    
     setTodoName("");
     console.log(response);
   };

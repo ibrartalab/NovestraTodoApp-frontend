@@ -33,9 +33,7 @@ export async function signUp(data: AuthSignupInput) {
     return response;
 }
 // Function to handle user logout
-// export async function logout() {
-//     localStorage.removeItem('token');
-//     localStorage.removeItem('username');
-
-//     window.location.href = '/login';
-// }
+export async function logout() {
+    await localStorage.removeItem('token');
+    await localStorage.removeItem('username');
+}

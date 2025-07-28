@@ -41,7 +41,7 @@ const TodoContext = createContext<TodosContextType>({
 
 const TodosProvider = ({ children }: TodosProviderType) => {
   const [todos, setTodos] = useState<AddTodoResponse[]>([]);
-  const [currentState, setCurrentState] = useState<number>(0);
+  const [currentState, setCurrentState] = useState<number>(1);
   const [totalTodos, setTotalTodos] = useState<number>(0);
   const [totalTodosCompleted, setTotalTodosCompleted] = useState<number>(0);
   const [totalTodosPending, setTotalTodosPending] = useState<number>(0);

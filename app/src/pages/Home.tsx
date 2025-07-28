@@ -20,7 +20,7 @@ const Home = () => {
             title="Organize Your Tasks Now"
             disabled={false}
             onClick={() => console.log("Get Started Clicked")}
-            styleClass="mt-4 max-w rounded-md bg-indigo-600 text-white hover:bg-indigo-400"
+            styleClass="mt-4 p-4 max-w rounded-md bg-indigo-600 text-white hover:bg-indigo-400"
             type="button"
             />
         </div>

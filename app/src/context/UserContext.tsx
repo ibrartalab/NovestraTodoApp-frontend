@@ -1,8 +1,10 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useEffect, useState, type ReactNode } from "react";
+import { logout } from "../api/authAPI";
 
 interface UserContextType {
   user: string;
   setUser: React.Dispatch<React.SetStateAction<string>>;
+  userLogout: () => void
   // logout: () => void,
 }
 
@@ -10,7 +12,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType>({
   user: "",
   setUser: () => {}, // Placeholder function, will be overridden by the Provider
-  // logout: () => {}
+  userLogout: () => {}
 });
 
 // Define the props for UserProvider, including children
@@ -35,25 +37,25 @@ const UserProvider = ({ children }: UserProviderProps) => {
     }
   });
 
-    // const logout = useCallback(() => {
-    //   setUser("")
-    // },[setUser]);
+    const userLogout = useCallback(() => {
+      setUser("")
+    },[setUser]);
 
-  //    useEffect(() => {
-  //   try {
-  //     if (user) {
-  //       localStorage.setItem('username', user);
-  //     } else {
-  //       localStorage.removeItem('username'); // Clear localStorage on logout
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to save user to localStorage:", error);
-  //   }
-  // }, [user]);
+     useEffect(() => {
+    try {
+      if (user) {
+        localStorage.setItem('username', user);
+      } else {
+        logout(); // Clear localStorage on logout
+      }
+    } catch (error) {
+      console.error("Failed to save user to localStorage:", error);
+    }
+  }, [user]);
 
   return (
     <>
-      <UserContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider value={{ user, setUser,userLogout }}>
         {children}
       </UserContext.Provider>
     </>

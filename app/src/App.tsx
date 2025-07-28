@@ -19,7 +19,7 @@ function App() {
   const PrivateRoutes = ({children}:{children:React.ReactNode}) => {
     const {user} = useContext(UserContext);
     if(!user){
-      return <Navigate to={'/login'} replace/>
+      return <Navigate to={'/'} replace/>
     }
     return <>{children}</>
   };
