@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink } from "react-router";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { ThemeContext } from "../context/ThemeContext";

@@ -1,8 +1,12 @@
 import React, { createContext, useState } from "react";
 
+type filters = "all" | "active" | "completed";
+
 interface SearchInputType {
   searchParam: string;
+  filters: filters;
   setSearchParam: React.Dispatch<React.SetStateAction<string>>;
+  setFilters: React.Dispatch<React.SetStateAction<filters>>;
 }
 
 interface SearchContextProviderType {
@@ -11,14 +15,17 @@ interface SearchContextProviderType {
 
 const SearchContext = createContext<SearchInputType>({
   searchParam: "",
+  filters: "all",
+  setFilters: () => {},
   setSearchParam: () => {},
 });
 
 const SearchContextProvider = ({ children }: SearchContextProviderType) => {
   const [searchParam, setSearchParam] = useState<string>("");
+  const [filters, setFilters] = useState<filters>("all");
 
   return (
-    <SearchContext.Provider value={{ searchParam, setSearchParam }}>
+    <SearchContext.Provider value={{ searchParam,filters,setFilters, setSearchParam }}>
       {children}
     </SearchContext.Provider>
   );

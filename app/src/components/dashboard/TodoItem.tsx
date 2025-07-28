@@ -2,7 +2,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Button from "../Button";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../../context/TodosContext";
 import {
   deleteTodo,
@@ -17,13 +17,22 @@ import EditTodo from "./EditTodo";
 const TodoItem = () => {
   // const [todos, setToDos] = useState<AddTodoResponse[]>([]);
   const { todos, fetchTodos } = useContext(TodoContext);
-  const { searchParam } = useContext(SearchContext);
+  const { searchParam, filters } = useContext(SearchContext);
   const [isEditTodo, setIsEditTodo] = useState<boolean>(false);
   const [newTodo, setNewTodo] = useState<string>("");
+  const [deleteTodoState, setDeleteTodoState] = useState<number>(1);
 
-  const searchedTodo = todos.filter((todo) =>
-    todo.name.toLowerCase().includes(searchParam)
-  );
+  const filterdTodos = todos.filter((todo) => {
+    const matchSearch = todo.name.toLowerCase().includes(searchParam);
+    let macthState = true;
+    
+    if (filters === "active") {
+      macthState = todo.isComplete === false;
+    } else if (filters === "completed") {
+      macthState = todo.isComplete === true;
+    }
+    return macthState && matchSearch;
+  });
 
   const today = new Date();
   const fullDate = today.toLocaleDateString("en-US", {
@@ -66,12 +75,16 @@ const TodoItem = () => {
   //delete todo
   const handleDeleteTodo = async (id: number) => {
     const response = await deleteTodo(id);
-    if (response.status === 200) {
-      await fetchTodos();
-    }
+    setDeleteTodoState((prev) => prev + 1);
+    console.log(response);
+    // if (response.status === 200) {
+
+    // }
   };
 
-  // update to mark is completed logic
+  useEffect(() => {
+    fetchTodos();
+  }, [fetchTodos, deleteTodoState]);
 
   return (
     <>
@@ -105,7 +118,7 @@ const TodoItem = () => {
       </div>
       </div>
       )} */}
-      {searchedTodo.map((todo) => (
+      {filterdTodos.map((todo) => (
         <div
           key={todo.id}
           className="flex justify-between items-center *:p-2  *:text-left *:text-xs *:font-medium"
