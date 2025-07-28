@@ -115,4 +115,97 @@ The following day-wise Gantt chart maps milestones and deadlines for each task, 
 - **Estimation plan \& timeline**: See section 7
 - **Demo Video/Presentation**: Slides or a screen recording of the architecture and main flows
 
+## How to Configure, Run, and Test the Todo App Project
+
+This section helps new users, reviewers, or contributors to quickly get the project running and verify its functionality.
+
+### Prerequisites
+
+- **Node.js** (version 14 or above) and **npm/yarn** installed for frontend dependencies
+- **.NET Core SDK** (version 6.0 or above) for backend API
+- A modern web browser for the frontend UI (Chrome, Firefox, Edge, etc.)
+- (Optional) **Postman** or similar API client for manual API testing
+
+---
+
+### Project Setup
+
+#### 1. Clone the Repository
+
+---
+
+#### 2. Setup and Run Backend API
+
+- Navigate to the backend project folder (usually `/backend/backend`)
+
+```terminal
+cd .\backend\backend
+```
+
+- Restore .NET dependencies:
+```terminal
+dotnet restore
+```
+
+- Apply any database migrations if needed (Entity Framework Core):
+- Restore .NET dependencies:
+```terminal
+dotnet ef database update
+```
+
+- Run the backend API server:
+```terminal
+dotnet run
+```
+```console
+
+- The API typically runs on `https://localhost:5001` or `http://localhost:5000` by default.
+```
+#### 3. Setup and Run Frontend React App
+
+- From the project root, go to the frontend folder (e.g., `app`):
+
+```terminal
+cd .\app\
+```
+- Install npm dependencies:
+```terminal
+npm install
+```
+
+- Start the frontend development server:
+```terminal
+npm run dev
+```
+
+```console
+
+- Open a browser and navigate to `http://localhost:3000`.
+
+---
+
+### Configuration
+
+- **Authentication:**  
+  The app uses Auth0 or a custom JWT solution. Configure authentication in the frontend `.env` file and backend `appsettings.json` or environment variables.  
+  For Auth0:
+  - Set `REACT_APP_AUTH0_DOMAIN` and `REACT_APP_AUTH0_CLIENT_ID` in the frontend `.env` file.
+  - Set Auth0 credentials in backend configuration for JWT validation.
+
+- **API URLs:**  
+  Ensure frontend API base URLs point to the running backend API URLs in `.env` file.
+
+---
+
+### Running Tests
+
+#### Backend Tests
+
+- From the backend project folder, run:
+
+```
+
+
+
+
 This template provides a complete overview tailored for submission and demonstration as per the Novestra Full-Stack Upskilling Program requirements. Please adjust technical specifics to match actual implementation in your codebase.

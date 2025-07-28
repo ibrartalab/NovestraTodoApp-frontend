@@ -9,7 +9,7 @@ export const Layout = ({children}: {children:React.ReactNode}) => {
    <div className={`layout w-full h-screen ${theme} ${text}`}>
     <Header />
     <main
-    className='flex-1 flex flex-col items-center justify-center p-4'
+    className='flex-1 flex flex-col items-center justify-center'
     >{children}</main>
     <Footer/>
    </div>

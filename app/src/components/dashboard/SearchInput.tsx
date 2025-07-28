@@ -13,7 +13,7 @@ export const SearchInput = () => {
   };
 
   return (
-    <div className="search-bar w-full flex items-center gap-2 border-2 border-gray-200 rounded-md px-2 bg-white">
+    <div className="search-bar w-full h-10 flex items-center gap-2 border-2 border-gray-200 rounded-md px-2 bg-white">
       <IoSearch className="text-gray-500 text-2xl w-10" />
       {/* <input type="text" className='w-full' /> */}
       <Input

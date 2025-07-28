@@ -63,6 +63,7 @@ function Navbar() {
         <li className="*:cursor-pointer">
           {theme === "bg-gray-50" ? (
             <MdDarkMode
+            className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
               onClick={() => {
                 setTheme("bg-black");
                 setText("text-white");
@@ -70,6 +71,7 @@ function Navbar() {
             />
           ) : (
             <MdLightMode
+            className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
               onClick={() => {
                 setTheme("bg-gray-50");
                 setText("text-balck");

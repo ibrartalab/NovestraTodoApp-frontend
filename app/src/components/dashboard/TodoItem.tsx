@@ -101,10 +101,10 @@ const TodoItem = () => {
             setIsEditTodo={setIsEditTodo}
             fetchTodos={fetchTodos}
           />
-          <div className="min-w-24">{todo.name}</div>
-          <div>{todo.isComplete ? "Completed" : "Pending"}</div>
-          <div>{fullDate}</div>
-          <div className="flex justify-center items-center gap-2">
+          <div className="w-3/4">{todo.name}</div>
+          <div className="w-max">{todo.isComplete ? "Completed" : "Pending"}</div>
+          <div className="">{fullDate}</div>
+          <div className="flex justify-center items-center gap-2 ">
             <Button
               title=""
               onClick={() => setIsEditTodo(!isEditTodo)}

@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router";
 import Button from "../components/Button";
 import { Layout } from "../components/Layout";
 
 const Home = () => {
+
+  const navigate = useNavigate();
   return (
     <Layout>
       <div className="hero-wrapper mt-20 px-24 flex justify-between items-center">
@@ -19,7 +22,7 @@ const Home = () => {
           <Button
             title="Organize Your Tasks Now"
             disabled={false}
-            onClick={() => console.log("Get Started Clicked")}
+            onClick={() => navigate('/signup')}
             styleClass="mt-4 p-4 max-w rounded-md bg-indigo-600 text-white hover:bg-indigo-400"
             type="button"
             />

@@ -41,6 +41,11 @@ const UserProvider = ({ children }: UserProviderProps) => {
       setUser("")
     },[setUser]);
 
+    // useEffect(() => {
+    //   console.log("App loaded. Forcing logout of previous session.");
+    //   userLogout();
+    // },[userLogout])
+
      useEffect(() => {
     try {
       if (user) {
