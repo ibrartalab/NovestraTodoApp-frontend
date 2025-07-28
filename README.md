@@ -1,5 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
-
 ## Todo App Project Documentation
 
 This documentation is designed according to the requirements outlined in the Novestra Full Stack Upskilling Program ToDo App assignment and should accompany the code hosted at [ibrartalab/Todo-App](https://github.com/ibrartalab/Todo-App).
@@ -8,9 +6,9 @@ This documentation is designed according to the requirements outlined in the Nov
 
 The purpose of this project is to demonstrate hands-on, industry-relevant skills in full-stack development by building a robust and maintainable Todo Application. It showcases mastery in modern technologies including:
 
-- **Frontend**: React (with Redux Toolkit, hooks, context, and react-router)
+- **Frontend**: React (with hooks, context, and react-router)
 - **Backend**: .NET Core Web API (with Clean Architecture principles)
-- **Authentication**: Auth0 or custom JWT
+- **Authentication**: custom JWT
 - **Testing**: Automated unit tests for both backend (.NET xUnit) and frontend (Jest/React Testing Library)
 
 
@@ -42,21 +40,20 @@ The purpose of this project is to demonstrate hands-on, industry-relevant skills
 
 - **POST** `/api/auth/register` — Register user
 - **POST** `/api/auth/login` — Login user
-- **POST** `/api/auth/logout` — Logout user
 
 
 #### Tasks
 
-- **GET** `/api/tasks` — List of tasks (with filtering query params: status, date)
-- **POST** `/api/tasks` — Create a new task
-- **GET** `/api/tasks/{id}` — Get a specific task
-- **PUT** `/api/tasks/{id}` — Edit a task
-- **DELETE** `/api/tasks/{id}` — Delete a task
+- **GET** `/api/TodoItems` — List of tasks (with filtering query params: status, date)
+- **POST** `/api/TodoItems` — Create a new task
+- **GET** `/api/TodoItems/{id}` — Get a specific task
+- **PUT** `/api/TodoItems/{id}` — Edit a task
+- **DELETE** `/api/TodoItems/{id}` — Delete a task
 
 
 #### Dashboard
 
-- **GET** `/api/dashboard/summary` — Task stats for dashboard view
+- **Access Dashbaord** `/dashboard/username` — Task stats for dashboard view
 
 
 ### 5. Architecture Overview
@@ -82,42 +79,34 @@ The purpose of this project is to demonstrate hands-on, industry-relevant skills
     - Test all API endpoints, business logic, and repository/database interactions
     - Target 80%+ code coverage
 
+## Project Plan: Gantt Chart for Todo App Development
 
-### 7. Planning \& Estimation
+The following day-wise Gantt chart maps milestones and deadlines for each task, starting from Monday, July 21, 2025, to Monday, July 28, 2025. This schedule includes dedicated learning time for C# and .NET Core alongside development tasks.
 
-#### Task Breakdown and Estimates
+| Date       | Task                                      | Hours |
+|------------|-------------------------------------------|-------|
+| 2025-07-21 | Learn C# and .NET basics                   | 4     |
+| 2025-07-21 | Setup React project                        | 2     |
+| 2025-07-21 | Task management UI components              | 2     |
+| 2025-07-22 | Deepen C#/.NET API familiarity            | 3     |
+| 2025-07-22 | Setup .NET Core API project                | 2     |
+| 2025-07-22 | Setup routing/auth (frontend)              | 3     |
+| 2025-07-23 | API endpoints (learning & coding)          | 4     |
+| 2025-07-23 | DB schema + EF core (learning & hands-on) | 4     |
+| 2025-07-24 | Complete authentication integration        | 3     |
+| 2025-07-24 | Write tests (learn testing frameworks)     | 3     |
+| 2025-07-24 | Write tests (hands-on)                     | 2     |
+| 2025-07-25 | Buffer/Review, Coding best practices       | 2     |
+| 2025-07-25 | Testing, Bug fixes                         | 3     |
 
-| Task | Estimated Hours |
-| :-- | :-- |
-| Setup React project | 3 |
-| Task mgmt UI components | 6 |
-| Setup routing/auth | 4 |
-| Setup .NET Core API | 4 |
-| DB schema + EF core | 4 |
-| API endpoints | 4 |
-| Authentication | 2 |
-| Write tests (FE+BE) | 6 |
-| **Total** | **33** |
+**Notes:**
 
-#### Project Plan
-
-- Use a **Gantt chart** to map milestones and deadlines to each task.
+- Learning and development tasks are combined daily to support skill acquisition while progressing on project deliverables.
+- The final days (July 26–28) are allocated as buffer time for review, additional coding, testing, or demo preparation.
+- Daily work hours are balanced between 6 to 8 hours for sustainable progress.
 
 
-### 8. Demo Presentation Flow
-
-1. **Introduce Architecture**
-    - Explain API, frontend stack, code structure, clean separation
-2. **Showcase Features**
-    - User registration/login/logout
-    - Task CRUD (create, edit, delete)
-    - Task filtering and dashboard summaries
-3. **Walkthrough**
-    - React components, state management, API endpoints, authentication
-4. **Q\&A**
-    - Be ready to answer about design decisions, code quality, security, error handling, and testing coverage
-
-### 9. Deliverables
+### 8. Deliverables
 
 - **Source Code**: In the specified [GitHub repository](https://github.com/ibrartalab/Todo-App)
 - **Documentation**: This file, and in-code comments
@@ -126,40 +115,4 @@ The purpose of this project is to demonstrate hands-on, industry-relevant skills
 - **Estimation plan \& timeline**: See section 7
 - **Demo Video/Presentation**: Slides or a screen recording of the architecture and main flows
 
-
-### 10. Evaluation Criteria
-
-- Fulfillment of CRUD and filter features
-- Clean, maintainable, well-structured code (SOLID principles)
-- Adherence to the planning and estimation outlined
-- Comprehensive testing
-- Secure and standards-compliant authentication
-
-This template provides a complete overview tailored for submission and demonstration as per the Novestra Full-Stack Upskilling Program requirements[^1]. Please adjust technical specifics to match actual implementation in your codebase.
-
-<div style="text-align: center">⁂</div>
-
-[^1]: Novestra-full-stack-Upskilling-Program-ToDo-App-2.pdf
-
-[^2]: https://github.com/ibrartalab/Todo-App.
-
-[^3]: https://github.com/topics/todo-list-app
-
-[^4]: https://github.com/topics/todo-app
-
-[^5]: https://github.com/topics/react-todo-app
-
-[^6]: https://github.com/topics/mern-todo-app
-
-[^7]: https://pkg.go.dev/github.com/matthieukhl/go-todo-app
-
-[^8]: https://github.com/rd273001/TODO-App
-
-[^9]: https://fintech.theodo.com/blog-posts/build-a-real-time-todo-app-in-30-minutes-with-reactjs-typescript-and-firebase
-
-[^10]: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/React_todo_list_beginning
-
-[^11]: https://github.com/topics/todoapp
-
-[^12]: https://gitlab.com/todo4390331/todoapp
-
+This template provides a complete overview tailored for submission and demonstration as per the Novestra Full-Stack Upskilling Program requirements. Please adjust technical specifics to match actual implementation in your codebase.
