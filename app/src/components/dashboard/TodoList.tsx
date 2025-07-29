@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import TodoItem from "./TodoItem";
 import { SearchContext } from "../../context/SearchContext";
+import { TodoContext } from "../../context/TodosContext";
 
 const TodoList = () => {
   const { setFilters } = useContext(SearchContext);
+  const {totalTodos,totalTodosCompleted} = useContext(TodoContext);
   const handleFiltersChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     switch (event.target.value) {
       case "all":
@@ -19,11 +21,18 @@ const TodoList = () => {
         setFilters("all");
     }
   };
+  
+  const progressBarWidth = String(Math.round((totalTodosCompleted / totalTodos * 100)));
+  const progressBarStyles = {
+    width:progressBarWidth + '%',
+  }
+  
   return (
     <div className="sidebar w-full h-full text-black">
       <div className="todos-wrapper w-full h-full flex flex-col gap-2">
-        <div className="filters">
-          <select
+        <div className="filters flex justify-between items-center">
+          <div>
+            <select
             name="filter"
             id="filterByStatus"
             className="*:text-xs *:font-medium bg-white rounded-sm"
@@ -33,7 +42,18 @@ const TodoList = () => {
             <option value="active">Active</option>
             <option value="completed">Completed</option>
           </select>
+          </div>
+          <div className="progress w-60 flex items-center gap-4 mt-4">
+          <p className="text-sm">Progress</p>
+          <div className="progress-bar rounded-full bg-gray-300"
+          >
+            <div className={`bar h-full rounded-full bg-green-400`}
+            style={progressBarStyles}
+            ></div>
+          </div>
         </div>
+        </div>
+
         <div className="table-wrapper rounded-lg w-full h-3/4 broder border-2 bg-gray-100">
           <div className="Header w-full flex justify-between pr-8 text-sm font-medium  p-4 rounded-t-lg bg-white">
             <div className="w-3/4">Todo Name</div>
@@ -45,6 +65,7 @@ const TodoList = () => {
             <TodoItem />
           </div>
         </div>
+        
       </div>
     </div>
   );

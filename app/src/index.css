@@ -24,4 +24,7 @@ body {
 .todos-list-wrapper::-webkit-scrollbar{
   display: none;
 }
-
+.progress-bar{
+  width: 100%;
+  height: 10px;
+}
