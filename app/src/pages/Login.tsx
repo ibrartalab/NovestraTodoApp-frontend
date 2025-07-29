@@ -75,7 +75,7 @@ const LoginForm = () => {
 
         <Input
           label="Password"
-          type="text"
+          type='password'
           name="password"
           value={formData.password}
           onChange={handleInputChange}
