@@ -5,6 +5,8 @@ import { Loader } from './components/Loader';
 import UserProvider, { UserContext } from './context/UserContext';
 import SearchContextProvider from './context/SearchContext';
 import ThemeContextProvider from './context/ThemeContext';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 // This is the main application file where we set up routing and lazy loading of components
 // The Suspense component is used to handle loading states for lazy-loaded components
@@ -27,6 +29,7 @@ function App() {
 
   return (
     <>
+    <Provider store={store}>
     <ThemeContextProvider>
     <SearchContextProvider>
     <UserProvider>
@@ -49,6 +52,7 @@ function App() {
     </UserProvider>
     </SearchContextProvider>
     </ThemeContextProvider>
+    </Provider>
     </>
   )
 }

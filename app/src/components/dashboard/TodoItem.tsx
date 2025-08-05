@@ -4,13 +4,9 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Button from "../Button";
 import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../../context/TodosContext";
-import {
-  deleteTodo,
-  updateTodo,
-  type UpdateTodoInput,
-} from "../../api/todosAPI";
 import { SearchContext } from "../../context/SearchContext";
 import EditTodo from "./EditTodo";
+import useTodoApi, { type UpdateTodoInput } from "../../hooks/useTodoAPI";
 
 const TodoItem = () => {
   // const [todos, setToDos] = useState<AddTodoResponse[]>([]);
@@ -19,6 +15,7 @@ const TodoItem = () => {
   const [isEditTodo, setIsEditTodo] = useState<boolean>(false);
   const [newTodo, setNewTodo] = useState<string>("");
   const [deleteTodoState, setDeleteTodoState] = useState<number>(1);
+  const {updateTodo,deleteTodo} = useTodoApi();
 
   const filterdTodos = todos.filter((todo) => {
     const matchSearch = todo.name.toLowerCase().includes(searchParam);

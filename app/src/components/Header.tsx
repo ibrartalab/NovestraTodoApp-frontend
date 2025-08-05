@@ -3,7 +3,9 @@ import { NavLink } from "react-router";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { ThemeContext } from "../context/ThemeContext";
-import { UserContext } from "../context/UserContext";
+// import { UserContext } from "../context/UserContext";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { logOut } from "../features/auth/authSlice";
 
 export const Header = () => {
   return (
@@ -19,13 +21,15 @@ export const Header = () => {
 // Sub components headers for the app
 function Navbar() {
   const { theme, setTheme, setText } = useContext(ThemeContext);
-  const { user, userLogout } = useContext(UserContext);
+  // const { user, userLogout } = useContext(UserContext);
+  const userName = useAppSelector((state) => state.auth.userName);
+  const dispatch = useAppDispatch();
   return (
     <>
       <ul>
         <li>
           <NavLink
-            to={`${user ? "/" : "/"}`}
+            to={`${userName ? "/" : "/"}`}
             className={({ isActive }) =>
               isActive ? "text-indigo-600" : "hover:text-indigo-800"
             }
@@ -35,29 +39,29 @@ function Navbar() {
         </li>
         <li>
           <NavLink
-            to={`${user ? "/" : "/login"}`}
+            to={`${userName ? "/" : "/login"}`}
             className={({ isActive }) =>
               isActive ? "text-indigo-600" : "hover:text-indigo-800"
             }
             onClick={
-              user
+              userName
                 ? () => {
-                    userLogout();
+                    dispatch(logOut());
                   }
                 : () => {}
             }
           >
-            {`${user ? "Logout" : "Login"}`}
+            {`${userName ? "Logout" : "Login"}`}
           </NavLink>
         </li>
         <li>
           <NavLink
-            to={`${user ? "" : "/signup"}`}
+            to={`${userName ? "" : "/signup"}`}
             className={({ isActive }) =>
               isActive ? "text-indigo-600" : "hover:text-indigo-800"
             }
           >
-            {`${user ? "" : "Register"}`}
+            {`${userName ? "" : "Register"}`}
           </NavLink>
         </li>
         <li className="*:cursor-pointer">

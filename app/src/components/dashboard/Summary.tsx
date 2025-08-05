@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import Input from "../Input";
 import Button from "../Button";
-import { addTodo } from "../../api/todosAPI";
 import { TodoContext } from "../../context/TodosContext";
+import useTodoApi from "../../hooks/useTodoAPI";
 
 export const Summary = () => {
+  const {addTodo } = useTodoApi();
   const [todoName, setTodoName] = React.useState("");
   const {
     totalTodos,

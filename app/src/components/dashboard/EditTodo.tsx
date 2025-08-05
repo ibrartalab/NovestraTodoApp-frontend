@@ -1,7 +1,7 @@
 import { MdOutlineCancel } from "react-icons/md";
 import Button from "../Button";
 import Input from "../Input";
-import { updateTodo, type UpdateTodoInput } from "../../api/todosAPI";
+import useTodoApi, { type UpdateTodoInput } from "../../hooks/useTodoAPI";
 
 interface EditTodoType {
   newTodo: string;
@@ -13,7 +13,8 @@ interface EditTodoType {
   setIsEditTodo: React.Dispatch<React.SetStateAction<boolean>>;
   fetchTodos: () => void;
 }
-const  EditTodo = ({
+
+const EditTodo = ({
   newTodo,
   isEditTodo,
   handleNewTodoInputChange,
@@ -22,15 +23,15 @@ const  EditTodo = ({
   setIsEditTodo,
   fetchTodos,
 }: EditTodoType) => {
-  const handleUpdateTodoContext = async (
-  ): Promise<void> => {
+  const {updateTodo} = useTodoApi();
+  const handleUpdateTodoContext = async (): Promise<void> => {
     try {
       const data: UpdateTodoInput = {
         id: id,
         name: newTodo,
         isComplete: status,
       };
-      console.log(id,newTodo,status)
+      console.log(id, newTodo, status);
       const response = await updateTodo(id, data);
       if (
         response.status === 201 ||
@@ -39,7 +40,7 @@ const  EditTodo = ({
       ) {
         fetchTodos();
       }
-      setIsEditTodo(false)
+      setIsEditTodo(false);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -81,6 +82,6 @@ const  EditTodo = ({
       )}
     </>
   );
-}
+};
 
-export default EditTodo
+export default EditTodo;
