@@ -4,7 +4,7 @@ import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
 import { ThemeContext } from "../context/ThemeContext";
 // import { UserContext } from "../context/UserContext";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/redux/reduxHooks";
 import { logOut } from "../features/auth/authSlice";
 
 export const Header = () => {
@@ -67,7 +67,7 @@ function Navbar() {
         <li className="*:cursor-pointer">
           {theme === "bg-gray-50" ? (
             <MdDarkMode
-            className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
+              className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
               onClick={() => {
                 setTheme("bg-black");
                 setText("text-white");
@@ -75,7 +75,7 @@ function Navbar() {
             />
           ) : (
             <MdLightMode
-            className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
+              className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
               onClick={() => {
                 setTheme("bg-gray-50");
                 setText("text-balck");

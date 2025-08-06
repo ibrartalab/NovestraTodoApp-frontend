@@ -1,5 +1,4 @@
 import { createContext, useCallback, useEffect, useState, type ReactNode } from "react";
-import { logout } from "../api/authAPI";
 
 interface UserContextType {
   user: string;
@@ -51,7 +50,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
       if (user) {
         localStorage.setItem('username', user);
       } else {
-        logout(); // Clear localStorage on logout
+        // logout(); // Clear localStorage on logout
       }
     } catch (error) {
       console.error("Failed to save user to localStorage:", error);

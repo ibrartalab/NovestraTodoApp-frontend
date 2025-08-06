@@ -1,7 +1,5 @@
-import axios, {
-  type AxiosInstance,
-} from "axios";
-import { secrets } from "../config/secrets";
+import axios, { type AxiosInstance } from "axios";
+import { secrets } from "./secrets";
 
 const { BACKEND_URL } = secrets;
 
@@ -12,7 +10,7 @@ export const axiosInstance: AxiosInstance = axios.create({
   timeout: 10000, // Set a timeout for requests
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
     "Access-Control-Allow-Origin": "*", // Adjust CORS settings as needed
   },
 });
@@ -22,7 +20,7 @@ export const axiosPrivate: AxiosInstance = axios.create({
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
     "Access-Control-Allow-Origin": "*",
   },
 });

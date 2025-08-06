@@ -1,4 +1,4 @@
-import  { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "../config/axiosInstance";
 
 export interface AuthLoginInput {
   username: string;
@@ -9,6 +9,7 @@ export interface AuthSignupInput {
   firstName: string;
   lastName: string;
   username: string;
+  email: string;
   password: string;
 }
 
@@ -27,6 +28,9 @@ export async function login(data: AuthLoginInput) {
 }
 // Function to handle user signup
 export async function signUp(data: AuthSignupInput) {
-  const response = await axiosInstance.post<AuthResponse>("/Auth/register", data);
+  const response = await axiosInstance.post<AuthResponse>(
+    "/Auth/register",
+    data
+  );
   return response;
 }

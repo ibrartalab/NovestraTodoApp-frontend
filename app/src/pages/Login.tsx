@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 // import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
 import { Loader } from "../components/Loader";
@@ -22,6 +22,7 @@ const LoginForm = () => {
 
   // const [showPassword, setShowPassword] = useState(false);
   const { login, loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = useMemo(() => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,28 +36,28 @@ const LoginForm = () => {
     return <Loader />;
   }
 
-  const handleLogin = () => {
-    // Logic to handle login
-    if (formData.username.trim() === "" || formData.password.trim() === "") {
-      alert("Username and password cannot be empty");
-      return;
+  const handleLogin = async () => {
+  if (formData.username.trim() === "" || formData.password.trim() === "") {
+    alert("Username and password cannot be empty");
+    return;
+  }
+
+  try {
+    const response = await login({
+      username: formData.username,
+      password: formData.password,
+    });
+
+    if (response?.statusCode === 200 || response?.statusCode === 201) {
+      console.log("Login successful:", response);
+      navigate(`/dashboard/${response.username}`, { replace: true }); // ✅ redirect properly
     }
-    // Call the login function from useAuth hook
-    login({ username: formData.username, password: formData.password })
-      .then((response) => {
-        if (response) {
-          console.log("Login successful:", response);
-        }
-        if (response?.statusCode === 200) {
-          // Redirect to dashboard or home page after successful login
-          window.location.href = `/dashboard/${response.username}`;
-        }
-      })
-      .catch((error) => {
-        console.error("Login failed:", error);
-        alert("Login failed. Please check your credentials.");
-      });
-  };
+  } catch (error) {
+    console.error("Login failed:", error);
+    alert("Login failed. Please check your credentials.");
+  }
+};
+
 
   return (
     <div className="auth-login_form *:w-80 bg-white rounded-lg flex justify-center items-center mt-40">

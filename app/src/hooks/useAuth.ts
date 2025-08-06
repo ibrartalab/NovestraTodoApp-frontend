@@ -25,6 +25,10 @@ export function useAuth() {
         throw new Error("Missing username or token");
       }
 
+      if (response.status == 200) {
+        window.location.href = `/dashboard/${response.data.username}`;
+      }
+
       // Dispatch credentials to Redux store
       dispatch(
         setCredentials({

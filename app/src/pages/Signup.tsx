@@ -12,6 +12,7 @@ const initialState: AuthSignupInput = {
   firstName: "",
   lastName: "",
   username: "",
+  email: "",
   password: "",
 };
 
@@ -46,6 +47,7 @@ const SignUpForm = () => {
       firstName: formData.firstName,
       lastName: formData.lastName,
       username: formData.username,
+      email: formData.email,
       password: formData.password,
     })
       .then((response) => {
@@ -100,6 +102,15 @@ const SignUpForm = () => {
                 type="text"
                 name="username"
                 value={formData.username}
+                onChange={handleInputChange}
+                styleClass="text-black"
+              />
+              <Input
+                label="Email"
+                placeholder="Enter your email"
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleInputChange}
                 styleClass="text-black"
               />
