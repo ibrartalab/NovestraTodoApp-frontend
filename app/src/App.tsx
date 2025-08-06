@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import TodosProvider from "./context/TodosContext";
 import { Loader } from "./components/Loader";
 // import UserProvider, { UserContext } from './context/UserContext';
 import SearchContextProvider from "./context/SearchContext";
@@ -38,7 +37,6 @@ function App() {
           <ThemeContextProvider>
             <SearchContextProvider>
               <UserProvider>
-                <TodosProvider>
                   <Suspense fallback={<Loader />}>
                     <Routes>
                       <Route path="/" element={<HomePage />} />
@@ -54,7 +52,6 @@ function App() {
                       />
                     </Routes>
                   </Suspense>
-                </TodosProvider>
               </UserProvider>
             </SearchContextProvider>
           </ThemeContextProvider>

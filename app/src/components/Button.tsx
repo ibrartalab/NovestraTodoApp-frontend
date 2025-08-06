@@ -1,13 +1,13 @@
 import React from "react";
 
-
+type ButtonUse = "button" | "submit" | "reset";
 interface ButtonProps {
     title: string;
     disabled: boolean;
     children?: React.ReactNode;
     styleClass?: string;
-    onClick: () => void;
-    type?: "button" | "submit" | "reset";
+    onClick: (e:React.MouseEvent<HTMLButtonElement>) => void;
+    type?: ButtonUse;
 }
 
 

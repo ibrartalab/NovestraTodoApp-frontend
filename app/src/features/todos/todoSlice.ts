@@ -5,8 +5,10 @@ import * as todoApi from '../../api/todoAPI';
 // Define the todo type
 export interface Todo {
   id: number;
-  name: string;
+  title: string;
+  description?: string;
   isComplete: boolean;
+  userId: number;
 }
 
 // Define the initial state

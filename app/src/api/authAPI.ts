@@ -1,25 +1,5 @@
 import { axiosInstance } from "../config/axiosInstance";
-
-export interface AuthLoginInput {
-  username: string;
-  password: string;
-}
-
-export interface AuthSignupInput {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  firstName: string;
-  lastName: string;
-  username: string;
-  token: string;
-  statusCode: number;
-}
+import type { AuthLoginInput, AuthResponse, AuthSignupInput } from "../types/auth/types";
 
 // Function to handle user login
 export async function login(data: AuthLoginInput) {

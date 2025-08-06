@@ -1,46 +1,44 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import {
-  type AuthLoginInput,
-  type AuthSignupInput,
-  type AuthResponse,
   login as apiLogin,
   signUp as apiSignup,
 } from "../api/authAPI";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
+import type { AuthLoginInput, AuthResponse, AuthResponseWithStatus, AuthSignupInput } from "../types/auth/types";
 
 export function useAuth() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (input: AuthLoginInput): Promise<AuthResponse | null> => {
+  const login = async (input: AuthLoginInput) => {
     setLoading(true);
     setError(null);
     try {
+
       const response = await apiLogin(input);
 
-      if (!response.data.username || !response.data.token) {
-        throw new Error("Missing username or token");
-      }
+      // Add some basic validation
+      // if(!response.data){
+      //   throw new Error("Invalid response data");
+      // }else if(response.data.user.username === "" || response.data.token === ""){
+      //   throw new Error("Username or token is empty");
+      // }
 
-      if (response.status == 200) {
-        window.location.href = `/dashboard/${response.data.username}`;
-      }
+      // // Dispatch credentials to Redux store
+      // dispatch(
+      //   setCredentials({
+      //     accessToken: response.data.token,
+      //     user: response.data.user.username, // or user object depending on your reducer
+      //   })
+      // );
 
-      // Dispatch credentials to Redux store
-      dispatch(
-        setCredentials({
-          accessToken: response.data.token,
-          user: response.data.username, // or user object depending on your reducer
-        })
-      );
+      // console.log("Login successful inside useAuth:", response.data);
+      // console.log("Login response status code:", response.status);
 
-      return {
-        ...response.data,
-        statusCode: response.status,
-      };
+      return response;
     } catch (err: unknown) {
       setError("Login failed. Please check your credentials.");
       return null;
@@ -54,15 +52,24 @@ export function useAuth() {
     setError(null);
     try {
       const response = await apiSignup(input);
+      // Add some basic validation
+      // if (!response.data) {
+      //   throw new Error("Invalid response data");
+      // }
 
-      if (!response.data.username || !response.data.token) {
-        throw new Error("Missing username or token");
-      }
+      // if (!response.data.user.username || !response.data.token) {
+      //   throw new Error("Missing username or token");
+      // }
 
-      return {
-        ...response.data,
-        statusCode: response.status,
-      };
+      // // Dispatch credentials to Redux store
+      // dispatch(
+      //   setCredentials({
+      //     accessToken: response.data.token,
+      //     user: response.data.user.username, // or user object depending on your reducer
+      //   })
+      // );
+
+      return response.data;
     } catch (err: unknown) {
       setError("Signup failed. Please check your details.");
       return null;

@@ -2,6 +2,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import Button from "../Button";
 import Input from "../Input";
 import useTodoApi, { type UpdateTodoInput } from "../../hooks/useTodoAPI";
+import { useAppDispatch } from "../../hooks/redux/reduxHooks";
 
 interface EditTodoType {
   newTodo: string;
@@ -24,6 +25,8 @@ const EditTodo = ({
   fetchTodos,
 }: EditTodoType) => {
   const {updateTodo} = useTodoApi();
+  const dispatch = useAppDispatch();
+  
   const handleUpdateTodoContext = async (): Promise<void> => {
     try {
       const data: UpdateTodoInput = {
@@ -32,7 +35,7 @@ const EditTodo = ({
         isComplete: status,
       };
       console.log(id, newTodo, status);
-      const response = await updateTodo(id, data);
+      const response = await dispatch(updateTodo({ id, data }));
       if (
         response.status === 201 ||
         response.status === 204 ||

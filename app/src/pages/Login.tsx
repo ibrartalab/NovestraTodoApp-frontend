@@ -5,25 +5,23 @@ import { Link, useNavigate } from "react-router";
 // import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
 import { Loader } from "../components/Loader";
+import type { AuthLoginInput } from "../types/auth/types";
 
-interface LoginFormProps {
-  username: string;
-  password: string;
-}
-const initialValues: LoginFormProps = {
+const initialValues: AuthLoginInput = {
   username: "",
   password: "",
 };
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState<LoginFormProps>({
+  // States
+  const [formData, setFormData] = useState<AuthLoginInput>({
     ...initialValues,
   });
-
-  // const [showPassword, setShowPassword] = useState(false);
   const { login, loading } = useAuth();
   const navigate = useNavigate();
 
+  // Function to handle input changes
+  // Using useMemo to optimize performance by memoizing the function
   const handleInputChange = useMemo(() => {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
@@ -32,36 +30,37 @@ const LoginForm = () => {
     };
   }, []);
 
+  // If loading, return the loader component
   if (loading) {
     return <Loader />;
   }
 
-  const handleLogin = async () => {
-  if (formData.username.trim() === "" || formData.password.trim() === "") {
-    alert("Username and password cannot be empty");
-    return;
-  }
+  // Function to handle login
+  // This function will be called when the user clicks the "Login" button
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    if (formData.username.trim() === "" || formData.password.trim() === "") {
+      alert("Username and password cannot be empty");
+      return;
+    }
 
-  try {
     const response = await login({
       username: formData.username,
       password: formData.password,
     });
-
-    if (response?.statusCode === 200 || response?.statusCode === 201) {
-      console.log("Login successful:", response);
-      navigate(`/dashboard/${response.username}`, { replace: true }); // ✅ redirect properly
+    // console.log("Login response:", response?.statusCode);
+    console.log("Login response data:", response);
+    if (response?.status == 200) {
+      console.log("Login successful:", response.status);
+      console.log("User data:", response.data.user);
+      // Redirect to dashboard after successful login
+      navigate(`/dashboard/${response.data.user.userName}`, { replace: true });
     }
-  } catch (error) {
-    console.error("Login failed:", error);
-    alert("Login failed. Please check your credentials.");
-  }
-};
-
+  };
 
   return (
     <div className="auth-login_form *:w-80 bg-white rounded-lg flex justify-center items-center mt-40">
-      <form action="" className="*:w-full" onSubmit={(e) => e.preventDefault()}>
+      <form className="*:w-full" onSubmit={handleLogin}>
         <h1 className="text-lg font-medium">
           Welcom back! Access Your Account
         </h1>
@@ -76,7 +75,7 @@ const LoginForm = () => {
 
         <Input
           label="Password"
-          type='password'
+          type="password"
           name="password"
           value={formData.password}
           onChange={handleInputChange}
@@ -84,10 +83,11 @@ const LoginForm = () => {
         />
 
         <Button
+          type="submit"
           title="Login"
           styleClass={`text-white font-semibold h-12 mt-4 bg-indigo-600 hover:bg-indigo-400 w-full rounded-md`}
           disabled={false}
-          onClick={handleLogin}
+          onClick={() => {}}
         />
 
         <p className="text-sm mt-4 text-center">
@@ -100,7 +100,5 @@ const LoginForm = () => {
     </div>
   );
 };
-
-
 
 export default LoginForm;

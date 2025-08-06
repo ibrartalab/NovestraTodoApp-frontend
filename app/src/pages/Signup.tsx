@@ -4,9 +4,9 @@ import Button from "../components/Button";
 // import useFormValidator from "../../../hooks/useFormValidator";
 // import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
-import { type AuthSignupInput } from "../api/authAPI";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Loader } from "../components/Loader";
+import type { AuthSignupInput } from "../types/auth/types";
 
 const initialState: AuthSignupInput = {
   firstName: "",
@@ -23,8 +23,9 @@ const SignUpForm = () => {
   const [formData, setFormData] = useState<AuthSignupInput>({
     ...initialState,
   });
+  const navigate = useNavigate();
 
-  //functions
+  //function to handle input changes
   const handleInputChange = useMemo(() => {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
@@ -33,9 +34,13 @@ const SignUpForm = () => {
     };
   }, []);
   
+  //if loading return loader
   if (loading) {
     return <Loader />;
   }
+
+  //function to handle signup
+  // This function will be called when the user clicks the "Get Started" button
   const handleSignUp = () => {
     // Logic to handle signup
     if (formData.username.trim() === "" || formData.password.trim() === "") {
@@ -56,7 +61,7 @@ const SignUpForm = () => {
           // Redirect to login page after successful signup
         }
         if (response?.statusCode === 201) {
-          window.location.href = "/login";
+          navigate("/login", { replace: true });
         }
       })
       .catch((error) => {
