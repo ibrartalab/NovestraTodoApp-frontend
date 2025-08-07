@@ -73,8 +73,8 @@ const todosSlice = createSlice({
         state.todos = action.payload;
         state.loading = false;
         state.totalTodos = action.payload.length;
-        state.totalCompleted = action.payload.filter((t) => t.IsCompleted).length;
-        state.totalPending = action.payload.filter((t) => !t.IsCompleted).length;
+        state.totalCompleted = action.payload.filter((t) => t.isCompleted).length;
+        state.totalPending = action.payload.filter((t) => !t.isCompleted).length;
       })
       .addCase(fetchTodos.rejected, (state, action) => {
         state.loading = false;
@@ -85,7 +85,7 @@ const todosSlice = createSlice({
       .addCase(createTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
         state.todos.push(action.payload);
         state.totalTodos += 1;
-        if (action.payload.IsCompleted) {
+        if (action.payload.isCompleted) {
           state.totalCompleted += 1;
         } else {
           state.totalPending += 1;
@@ -94,10 +94,10 @@ const todosSlice = createSlice({
 
       // Update Todo
       .addCase(updateTodo.fulfilled, (state, action) => {
-        const index = state.todos.findIndex((t) => t.Id === action.payload.data.Id);
+        const index = state.todos.findIndex((t) => t.id === action.payload.data.id);
         if (index !== -1) {
-          const wasComplete = state.todos[index].IsCompleted;
-          const isNowComplete = action.payload.data.IsCompleted;
+          const wasComplete = state.todos[index].isCompleted;
+          const isNowComplete = action.payload.data.isCompleted;
 
           state.todos[index] = {
             ...state.todos[index],
@@ -118,12 +118,12 @@ const todosSlice = createSlice({
 
       // Delete Todo
       .addCase(deleteTodo.fulfilled, (state, action: PayloadAction<number>) => {
-        const deleted = state.todos.find((t) => t.Id === action.payload);
-        state.todos = state.todos.filter((t) => t.Id !== action.payload);
+        const deleted = state.todos.find((t) => t.id === action.payload);
+        state.todos = state.todos.filter((t) => t.id !== action.payload);
 
         if (deleted) {
           state.totalTodos -= 1;
-          if (deleted.IsCompleted) {
+          if (deleted.isCompleted) {
             state.totalCompleted -= 1;
           } else {
             state.totalPending -= 1;

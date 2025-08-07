@@ -25,9 +25,9 @@ const TodoItem = () => {
     setEditingTodoId(null);
   };
 
-  console.log("Todos:", todos);
   const filteredTodos = todos.filter((todo) => {
-    const matchSearch = todo.todo?.includes(searchParam);
+    
+    const matchSearch = todo.todo?.toLowerCase().includes(searchParam.toLowerCase());
     let matchState = true;
 
     if (filters === "active") {

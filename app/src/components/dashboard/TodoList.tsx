@@ -55,6 +55,7 @@ const TodoList = () => {
             style={progressBarStyles}
             ></div>
           </div>
+          <span className="text-sm font-medium text-green-500">{clampedWidth}%</span>
         </div>
         </div>
 
