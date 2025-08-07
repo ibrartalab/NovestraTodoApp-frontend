@@ -1,5 +1,5 @@
 import { axiosInstance } from "../config/axiosInstance";
-import type { AuthLoginInput, AuthResponse, AuthSignupInput } from "../types/auth/types";
+import type { AuthLoginInput, AuthResponse, AuthSignupInput } from "../features/auth/types";
 
 // Function to handle user login
 export async function login(data: AuthLoginInput) {

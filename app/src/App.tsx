@@ -18,12 +18,13 @@ const SignupPage = lazy(() => import("./pages/Signup"));
 const UserDashbaord = lazy(() => import("./pages/Dashboard"));
 
 function App() {
+  
   const PrivateRoutes = ({ children }: { children: React.ReactNode }) => {
     const userName = useAppSelector((state) => state.auth.userName);
     console.log("PrivateRoutes userName:", userName);
     if (!userName) {
       return <Navigate to="/" replace />;
-    }
+    } 
 
     return <>{children}</>;
   };

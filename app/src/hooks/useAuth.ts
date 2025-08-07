@@ -6,7 +6,7 @@ import {
 } from "../api/authAPI";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
-import type { AuthLoginInput, AuthResponse, AuthSignupInput } from "../types/auth/types";
+import type { AuthLoginInput, AuthSignupInput } from "../features/auth/types";
 
 export function useAuth() {
   const dispatch = useDispatch();
@@ -31,7 +31,8 @@ export function useAuth() {
       dispatch(
         setCredentials({
           accessToken: response.data.token,
-          user: response.data.user.userName, // or user object depending on your reducer
+          user: response.data.user.userName,
+          userId: response.data.user.id,
         })
       );
 

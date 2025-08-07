@@ -1,89 +1,66 @@
 import { MdOutlineCancel } from "react-icons/md";
 import Button from "../Button";
 import Input from "../Input";
-import useTodoApi, { type UpdateTodoInput } from "../../hooks/useTodoAPI";
+import { useState } from "react";
 import { useAppDispatch } from "../../hooks/redux/reduxHooks";
+import type { UpdateTodoInput } from "../../features/todos/types";
+import { updateTodo, fetchTodos } from "../../features/todos/todoSlice";
 
-interface EditTodoType {
-  newTodo: string;
-  isEditTodo: boolean;
-  handleNewTodoInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // handleUpdateTodoContext: (id: number,todo: string,status: boolean)=> Promise<void>;
+interface EditTodoProps {
   id: number;
+  initialValue: string;
   status: boolean;
-  setIsEditTodo: React.Dispatch<React.SetStateAction<boolean>>;
-  fetchTodos: () => void;
+  onClose: () => void;
 }
 
-const EditTodo = ({
-  newTodo,
-  isEditTodo,
-  handleNewTodoInputChange,
-  id,
-  status,
-  setIsEditTodo,
-  fetchTodos,
-}: EditTodoType) => {
-  const {updateTodo} = useTodoApi();
+const EditTodo = ({ id, initialValue, status, onClose }: EditTodoProps) => {
+  const [editedTodo, setEditedTodo] = useState(initialValue);
   const dispatch = useAppDispatch();
-  
-  const handleUpdateTodoContext = async (): Promise<void> => {
+
+  const handleUpdate = async (): Promise<void> => {
     try {
       const data: UpdateTodoInput = {
-        id: id,
-        name: newTodo,
-        isComplete: status,
+        todo: editedTodo,
+        isCompleted: status,
+        completedAt: status ? new Date().toISOString() : undefined,
       };
-      console.log(id, newTodo, status);
+
       const response = await dispatch(updateTodo({ id, data }));
-      if (
-        response.status === 201 ||
-        response.status === 204 ||
-        response.status === 200
-      ) {
-        fetchTodos();
+      if (response.meta.requestStatus === "fulfilled") {
+        dispatch(fetchTodos());
+        onClose(); // close modal
       }
-      setIsEditTodo(false);
-      return response.data;
     } catch (error) {
-      console.log(error);
+      console.error("Update failed", error);
     }
   };
 
   return (
-    <>
-      {isEditTodo && (
-        <div className="w-full h-full bg-gray-400/60 absolute top-0 left-0 ">
-          <div className="edit-todo absolute top-1/4 left-1/3 m-auto  w-1/3 h-52 z-50 flex justify-between items-center gap-2 bg-white">
-            <MdOutlineCancel
-              className="absolute top-2 right-2 text-2xl cursor-pointer text-indigo-500"
-              onClick={() => setIsEditTodo(false)}
-            />
-            <div className="w-full h-full flex justify-center items-center gap-2">
-              <div className="w-60 h-20">
-                <Input
-                  label="Update Todo"
-                  placeholder="Enter task name..."
-                  type="text"
-                  name="todo"
-                  value={newTodo}
-                  onChange={handleNewTodoInputChange}
-                  styleClass="w-full"
-                />
-              </div>
-              <div className="w-max h-20 flex justify-center items-center">
-                <Button
-                  title="Update"
-                  onClick={handleUpdateTodoContext}
-                  disabled={false}
-                  styleClass=" flex justify-center items-center w-24 h-10 rounded-md text-white bg-indigo-600 hover:bg-indigo-500"
-                />
-              </div>
-            </div>
-          </div>
+    <div className="w-full h-full bg-gray-400/60 fixed top-0 left-0 z-50 flex justify-center items-center">
+      <div className="bg-white rounded-md shadow-md p-6 relative w-96">
+        <MdOutlineCancel
+          className="absolute top-2 right-2 text-2xl cursor-pointer text-indigo-500"
+          onClick={onClose}
+        />
+        <Input
+          label="Update Todo"
+          placeholder="Enter task name..."
+          type="text"
+          name="todo"
+          value={editedTodo}
+          onChange={(e) => setEditedTodo(e.target.value)}
+          styleClass="w-full"
+        />
+        <div className="flex justify-end mt-4">
+          <Button
+            title="Update"
+            onClick={handleUpdate}
+            disabled={!editedTodo.trim()}
+            styleClass="w-24 h-10 rounded-md text-white bg-indigo-600 hover:bg-indigo-500"
+          />
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,13 @@
-import type { User } from "../user/types";
 
+// This file defines the types related to user management in the application.
+export interface User{
+    id: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
+    createdAt: string;
+}
 export interface AuthLoginInput {
   username: string;
   password: string;

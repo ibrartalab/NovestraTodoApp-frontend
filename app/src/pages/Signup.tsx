@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { Loader } from "../components/Loader";
-import type { AuthSignupInput } from "../types/auth/types";
+import type { AuthSignupInput } from "../features/auth/types";
 
 const initialState: AuthSignupInput = {
   firstName: "",
@@ -59,7 +59,7 @@ const SignUpForm = () => {
 
     if(response?.status == 200) {
       // Redirect to dashboard after successful signup
-      navigate(`/dashboard/${response.data.user.userName}`, { replace: true });
+      navigate(`/login`);
     }
   };
 

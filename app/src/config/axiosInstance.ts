@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
 import { secrets } from "./secrets";
+import store from "../store/store";
 
 const { BACKEND_URL } = secrets;
 
@@ -25,31 +26,17 @@ export const axiosPrivate: AxiosInstance = axios.create({
   },
 });
 
-// axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-//   const token = localStorage.getItem("token");
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+axiosPrivate.interceptors.request.use((config) => {
+  const state = store.getState();
+  const token = state.auth.accessToken;
 
-// //Dynamic logout logic using this axios response middleware
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response && error.response.status === 401) {
-//       const token = localStorage.getItem("token");
-
-//       if (token) {
-//         localStorage.removeItem("username");
-//         localStorage.removeItem("token");
-
-//         window.location.href = "/login";
-//       }
-//     } else {
-//       return;
-//     }
-//   }
-// );
-
+  if(token && !config.headers.Authorization) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+}
+, (error) => {
+  return Promise.reject(error);
+})
+export default axiosPrivate;
 // export default axiosInstance;

@@ -1,18 +1,24 @@
-import React, { useContext } from "react";
+// import React, { useContext } from "react";
 import Input from "../Input";
 import Button from "../Button";
-import { TodoContext } from "../../context/TodosContext";
-import useTodoApi from "../../hooks/useTodoAPI";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
+import { createTodo } from "../../features/todos/todoSlice";
+// import { TodoContext } from "../../context/TodosContext";
+// import useTodoApi from "../../hooks/useTodoAPI";
 
 export const Summary = () => {
-  const {addTodo } = useTodoApi();
-  const [todoName, setTodoName] = React.useState("");
-  const {
-    totalTodos,
-    totalTodosCompleted,
-    totalTodosPending,
-    setCurrentState,
-  } = useContext(TodoContext);
+  // const {addTodo } = useTodoApi();
+  const [todoName, setTodoName] = useState<string>("");
+  const {userId} = useAppSelector((state) => state.auth);
+  const {totalTodos,totalCompleted,totalPending} = useAppSelector((state) => state.todos);
+  const dispatch = useAppDispatch();
+  // const {
+  //   totalTodos,
+  //   totalTodosCompleted,
+  //   totalTodosPending,
+  //   setCurrentState,
+  // } = useContext(TodoContext);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Logic to handle input change
@@ -20,18 +26,26 @@ export const Summary = () => {
     setTodoName(value);
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     // Logic to add a new task
     if (todoName.trim() === "") {
       alert("Task name cannot be empty");
       return;
     }
-    setCurrentState((prev) => prev + 1);
-    // Here you would typically call a function to add the task to your state or backend
-    const response = addTodo({ name: todoName, isComplete: false });
-
+    // Dispatch the createTodo action with the new task data
+    // This will typically involve an API call to add the task to your backend
+    if( !userId) {
+      throw new Error("User ID is not available");
+    }
+    const data = {
+      Todo: todoName,
+      IsCompleted: false,
+      UserId: userId,
+      CreatedAt: new Date().toISOString(),
+      CompletedAt: new Date().toISOString(),
+    };
+    const response = await dispatch(createTodo(JSON.parse(JSON.stringify(data))));
     setTodoName("");
-    console.log(response);
   };
 
   return (
@@ -40,12 +54,12 @@ export const Summary = () => {
         <KPI title="Total Tasks" value={totalTodos} style="text-black" />
         <KPI
           title="Completed Tasks"
-          value={totalTodosCompleted}
+          value={totalCompleted}
           style="*:text-green-500"
         />
         <KPI
           title="Pending Tasks"
-          value={totalTodosPending}
+          value={totalPending}
           style="*:text-purple-500"
         />
         <KPI title="Overdue Tasks" value={0} style="*:text-red-500" />
@@ -65,11 +79,11 @@ export const Summary = () => {
         </div>
         <div>
           <Button
+            type='button'
             title="Add Task"
             disabled={false}
-            onClick={handleAddTask}
+            onClick={() => handleAddTask()}
             styleClass="w-24 h-10 flex justify-center items-center rounded-md bg-indigo-600 text-white text-xs hover:bg-indigo-400"
-            type="button"
           />
         </div>
       </div>
