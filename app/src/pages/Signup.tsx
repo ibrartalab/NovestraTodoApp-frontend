@@ -41,39 +41,32 @@ const SignUpForm = () => {
 
   //function to handle signup
   // This function will be called when the user clicks the "Get Started" button
-  const handleSignUp = () => {
+  const handleSignUp = async (e:React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
     // Logic to handle signup
     if (formData.username.trim() === "" || formData.password.trim() === "") {
       alert("Username and password cannot be empty");
       return;
     }
     // Call the signup function from useAuth hook
-    signup({
+    const response = await signup({
       firstName: formData.firstName,
       lastName: formData.lastName,
       username: formData.username,
       email: formData.email,
       password: formData.password,
-    })
-      .then((response) => {
-        if (response) {
-          console.log("Signup successful:", response);
-          // Redirect to login page after successful signup
-        }
-        if (response?.statusCode === 201) {
-          navigate("/login", { replace: true });
-        }
-      })
-      .catch((error) => {
-        console.error("Signup failed:", error);
-        alert("Signup failed. Please check your details.");
-      });
+    });
+
+    if(response?.status == 200) {
+      // Redirect to dashboard after successful signup
+      navigate(`/dashboard/${response.data.user.userName}`, { replace: true });
+    }
   };
 
   return (
     <>
       <div className="auth-signup_form flex justify-center items-center mt-40">
-        <div className="form_container ">
+        <div className="form_container " onSubmit={handleSignUp}>
           <form
             action=""
             className="form_fields "
@@ -129,10 +122,11 @@ const SignUpForm = () => {
                 styleClass="text-black"
               />
               <Button
+              type='submit'
                 title="Get Started"
                 styleClass={`text-white font-semibold h-12 mt-4 bg-indigo-600 hover:bg-indigo-400 w-full rounded-md`}
                 disabled={false}
-                onClick={handleSignUp}
+                onClick={() => {}}
               />
               <p className="text-sm text-center font-normal mt-4">
                 Have an account already{" "}

@@ -17,9 +17,3 @@ export interface AuthResponse {
   token: string;
   user:User;
 }
-
-export interface AuthResponseWithStatus {
-  token: string;
-  user: User;
-  statusCode: number;
-}

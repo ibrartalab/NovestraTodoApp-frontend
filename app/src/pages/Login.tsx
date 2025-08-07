@@ -48,11 +48,9 @@ const LoginForm = () => {
       username: formData.username,
       password: formData.password,
     });
-    // console.log("Login response:", response?.statusCode);
+
     console.log("Login response data:", response);
     if (response?.status == 200) {
-      console.log("Login successful:", response.status);
-      console.log("User data:", response.data.user);
       // Redirect to dashboard after successful login
       navigate(`/dashboard/${response.data.user.userName}`, { replace: true });
     }

@@ -6,7 +6,7 @@ import {
 } from "../api/authAPI";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
-import type { AuthLoginInput, AuthResponse, AuthResponseWithStatus, AuthSignupInput } from "../types/auth/types";
+import type { AuthLoginInput, AuthResponse, AuthSignupInput } from "../types/auth/types";
 
 export function useAuth() {
   const dispatch = useDispatch();
@@ -21,19 +21,19 @@ export function useAuth() {
       const response = await apiLogin(input);
 
       // Add some basic validation
-      // if(!response.data){
-      //   throw new Error("Invalid response data");
-      // }else if(response.data.user.username === "" || response.data.token === ""){
-      //   throw new Error("Username or token is empty");
-      // }
+      if(!response.data){
+        throw new Error("Invalid response data");
+      }else if(response.data.user.userName === "" || response.data.token === ""){
+        throw new Error("Username or token is empty");
+      }
 
-      // // Dispatch credentials to Redux store
-      // dispatch(
-      //   setCredentials({
-      //     accessToken: response.data.token,
-      //     user: response.data.user.username, // or user object depending on your reducer
-      //   })
-      // );
+      // Dispatch credentials to Redux store
+      dispatch(
+        setCredentials({
+          accessToken: response.data.token,
+          user: response.data.user.userName, // or user object depending on your reducer
+        })
+      );
 
       // console.log("Login successful inside useAuth:", response.data);
       // console.log("Login response status code:", response.status);
@@ -47,29 +47,29 @@ export function useAuth() {
     }
   };
 
-  const signup = async (input: AuthSignupInput): Promise<AuthResponse | null> => {
+  const signup = async (input: AuthSignupInput) => {
     setLoading(true);
     setError(null);
     try {
       const response = await apiSignup(input);
       // Add some basic validation
-      // if (!response.data) {
-      //   throw new Error("Invalid response data");
-      // }
+      if (!response.data) {
+        throw new Error("Invalid response data");
+      }
 
-      // if (!response.data.user.username || !response.data.token) {
-      //   throw new Error("Missing username or token");
-      // }
+      if (!response.data.user.userName || !response.data.token) {
+        throw new Error("Missing username or token");
+      }
 
       // // Dispatch credentials to Redux store
-      // dispatch(
-      //   setCredentials({
-      //     accessToken: response.data.token,
-      //     user: response.data.user.username, // or user object depending on your reducer
-      //   })
-      // );
+      dispatch(
+        setCredentials({
+          accessToken: response.data.token,
+          user: response.data.user.userName, // or user object depending on your reducer
+        })
+      );
 
-      return response.data;
+      return response;
     } catch (err: unknown) {
       setError("Signup failed. Please check your details.");
       return null;
