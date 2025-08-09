@@ -19,7 +19,7 @@ const  Input = ({ label,placeholder, type, name, value, onChange,length, error,e
     
     return (
         <div className="input-group w-full  flex flex-col my-2">
-            {label && <label className="input-group_label text-sm font-semibold text-gray-700 mb-1 bg-red-600">{label}</label>}
+            {label && <label className="input-group_label text-sm font-semibold text-gray-700 mb-1">{label}</label>}
             <input
             className={`input-group_input_field_${name} min-w-4 min-h-4 border-2 border-gray-200 rounded-md outline-none indent-2 caret-indigo-600 placeholder:text-sm ${styleClass}`}
             type={type} name={name} value={value}

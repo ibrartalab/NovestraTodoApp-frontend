@@ -16,12 +16,12 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-.todos-list-wrapper{
+.todos-list-container-rendered{
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.todos-list-wrapper::-webkit-scrollbar{
+.todos-list-container-rendered::-webkit-scrollbar{
   display: none;
 }
 .progress-bar{

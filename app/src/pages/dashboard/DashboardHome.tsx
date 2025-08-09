@@ -3,11 +3,11 @@ import TodoList from "../../components/dashboard/TodoList"
 
 const DashboardHome = () => {
   return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col gap-2 w-full h-full">
             <div className="addtodo">
                 <AddTodo/>
             </div>
-            <div className="todoList-container h-full overflow-y-scroll">
+            <div className="todoList-container">
                 <TodoList/>
             </div>
         </div>

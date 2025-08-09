@@ -13,7 +13,7 @@ import {
   deleteTodo,
   fetchTodos,
 } from "../../features/todos/todoSlice";
-import type { MarkTodoInput, UpdateTodoInput } from "../../features/todos/types";
+import type { MarkTodoInput} from "../../features/todos/types";
 
 export const TodoItem = () => {
   const { searchParam, filters } = useContext(SearchContext);
@@ -90,14 +90,14 @@ export const TodoItem = () => {
   return (
     <>
       {userTodos.length === 0 && (
-        <div className="w-full h-full flex justify-center items-center text-lg font-bold">
+        <div className="w-full flex justify-center items-center text-lg font-bold">
           No data returned
         </div>
       )}
       {filteredTodos.map((todo) => (
         <div
           key={todo.id}
-          className="flex justify-between items-center p-2  *:text-left *:text-xs *:font-medium"
+          className="py-2"
         >
           {editingTodoId === todo.id && (
             <EditTodo
@@ -108,8 +108,8 @@ export const TodoItem = () => {
             />
           )}
           <div className="item-wrapper">
-            <div className="todo-item-wrapper w-full h-10 flex justify-center items-center  bg-violet-500">
-              <div className="todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-white">
+            <div className="todo-item-wrapper w-full h-10 flex justify-center items-center">
+              <div className="todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-gray-100">
                 <div className="w-4 h-full flex justify-center items-center">
                   <Input
                     type="checkbox"
@@ -121,7 +121,7 @@ export const TodoItem = () => {
                   />
                 </div>
                 <div className="todo-left flex items-center w-full h-full ml-4">
-                  <p className="w-max text-wrap">This is testing todo!</p>
+                  <p className="w-max text-wrap">{todo.todo}</p>
                 </div>
                 <div className="todo-right w-20 flex justify-evenly items-center h-full">
                   <Button

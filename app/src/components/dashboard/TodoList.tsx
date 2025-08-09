@@ -23,7 +23,7 @@ const TodoList = () => {
   };
 
   return (
-    <div className="sidebar w-full h-full bg-stone-600 text-black">
+    <div className="todos-list-container-rendered w-full h-[470px] overflow-y-scroll">
       <TodoItem />
     </div>
   );
