@@ -1,11 +1,9 @@
-import { useContext } from "react";
 import { NavLink } from "react-router";
-import { MdDarkMode } from "react-icons/md";
-import { MdLightMode } from "react-icons/md";
-import { ThemeContext } from "../context/ThemeContext";
+
 // import { UserContext } from "../context/UserContext";
 import { useAppDispatch, useAppSelector } from "../hooks/redux/reduxHooks";
 import { logOut } from "../features/auth/authSlice";
+import { ThemeMode } from "./ThemeMode";
 
 export const Header = () => {
   return (
@@ -20,7 +18,6 @@ export const Header = () => {
 
 // Sub components headers for the app
 function Navbar() {
-  const { theme, setTheme, setText } = useContext(ThemeContext);
   // const { user, userLogout } = useContext(UserContext);
   const userName = useAppSelector((state) => state.auth.userName);
   const dispatch = useAppDispatch();
@@ -65,23 +62,7 @@ function Navbar() {
           </NavLink>
         </li>
         <li className="*:cursor-pointer">
-          {theme === "bg-gray-50" ? (
-            <MdDarkMode
-              className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
-              onClick={() => {
-                setTheme("bg-black");
-                setText("text-white");
-              }}
-            />
-          ) : (
-            <MdLightMode
-              className="rounded-full w-max h-max p-2 hover:bg-indigo-300"
-              onClick={() => {
-                setTheme("bg-gray-50");
-                setText("text-balck");
-              }}
-            />
-          )}
+          <ThemeMode/>
         </li>
       </ul>
     </>

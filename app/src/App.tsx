@@ -9,13 +9,15 @@ import { store } from "./store/store";
 import UserProvider from "./context/UserContext";
 import { useAppSelector } from "./hooks/redux/reduxHooks";
 import { Navigate } from "react-router-dom";
+import { DashboardLayout } from "./components/dashboard/layout/DashboardLayout";
 // This is the main application file where we set up routing and lazy loading of components
 // The Suspense component is used to handle loading states for lazy-loaded components
 
 const HomePage = lazy(() => import("./pages/Home"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const SignupPage = lazy(() => import("./pages/Signup"));
-const UserDashbaord = lazy(() => import("./pages/Dashboard"));
+// const UserDashbaord = lazy(() => import("./pages/Dashboard"));
+const UserDashbaord = lazy(() => import("./pages/dashboard/DashboardHome"));
 
 function App() {
   
@@ -44,13 +46,17 @@ function App() {
                       <Route path="/signup" element={<SignupPage />} />
                       <Route path="/login" element={<LoginPage />} />
                       <Route
-                        path="/dashboard/:username"
-                        element={
-                          <PrivateRoutes>
-                            <UserDashbaord />
-                          </PrivateRoutes>
-                        }
-                      />
+                      path="/dashboard/:userName"
+                      element={
+                        <PrivateRoutes>
+                          <DashboardLayout />
+                        </PrivateRoutes>
+                      }
+                      >
+                        {/* Index route for dashbiard */}
+                        <Route index element={<UserDashbaord />} />
+                        {/* Add more nested routes here if needed */}
+                      </Route>
                     </Routes>
                   </Suspense>
               </UserProvider>

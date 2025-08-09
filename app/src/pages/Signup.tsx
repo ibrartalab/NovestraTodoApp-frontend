@@ -65,7 +65,7 @@ const SignUpForm = () => {
 
   return (
     <>
-      <div className="auth-signup_form flex justify-center items-center mt-40">
+      <div className="auth-signup_form flex justify-center items-center mt-24">
         <div className="form_container " onSubmit={handleSignUp}>
           <form
             action=""

@@ -1,23 +1,29 @@
-import { FaRegEdit } from "react-icons/fa";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import Button from "../Button";
 import { useContext, useEffect, useState } from "react";
+import Input from "../Input";
+import Button from "../Button";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { SearchContext } from "../../context/SearchContext";
-import EditTodo from "./EditTodo";
+import { ThemeContext } from "../../context/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
-import type { UpdateTodoInput } from "../../features/todos/types";
-import { fetchTodos, updateTodo, deleteTodo } from "../../features/todos/todoSlice";
+import EditTodo from "./EditTodo";
+import {
+  fetchTodosByUserId,
+  updateTodo,
+  deleteTodo,
+  fetchTodos,
+} from "../../features/todos/todoSlice";
+import type { MarkTodoInput, UpdateTodoInput } from "../../features/todos/types";
 
-const TodoItem = () => {
+export const TodoItem = () => {
   const { searchParam, filters } = useContext(SearchContext);
-  // const [isEditTodo, setIsEditTodo] = useState<boolean>(false);
-  // const [newTodo, setNewTodo] = useState<string>("");
-  const { todos } = useAppSelector((state) => state.todos);
+  const { text } = useContext(ThemeContext);
+  const { userTodos } = useAppSelector((state) => state.todos);
+  const userId = useAppSelector((state) => state.auth.userId);
   const dispatch = useAppDispatch();
   const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
 
-   const handleEditClick = (id: number) => {
+  const handleEditClick = (id: number) => {
     setEditingTodoId(id);
   };
 
@@ -25,9 +31,10 @@ const TodoItem = () => {
     setEditingTodoId(null);
   };
 
-  const filteredTodos = todos.filter((todo) => {
-    
-    const matchSearch = todo.todo?.toLowerCase().includes(searchParam.toLowerCase());
+  const filteredTodos = userTodos.filter((todo) => {
+    const matchSearch = todo.todo
+      ?.toLowerCase()
+      .includes(searchParam.toLowerCase());
     let matchState = true;
 
     if (filters === "active") {
@@ -39,21 +46,16 @@ const TodoItem = () => {
     return matchSearch && matchState;
   });
 
-  const today = new Date();
-  const fullDate = today.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  });
+  // const today = new Date();
+  // const fullDate = today.toLocaleDateString("en-US", {
+  //   year: "numeric",
+  //   month: "numeric",
+  //   day: "numeric",
+  // });
 
-  const handleMarkTodo = async (
-    id: number,
-    todo: string,
-    status: boolean
-  ) => {
+  const handleMarkTodo = async (id: number,status: boolean) => {
     try {
-      const data: UpdateTodoInput = {
-        todo: todo,
+      const data: MarkTodoInput = {
         isCompleted: status,
         completedAt: new Date().toISOString(),
       };
@@ -75,12 +77,19 @@ const TodoItem = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchTodos());
-  }, [dispatch]);
+    // Fetch todos by user ID when the component mounts
+    // Assuming you have a userId available in your Redux store or context
+    if (!userId) {
+      console.error("User ID is not available", userId);
+      return;
+    }
+    dispatch(fetchTodosByUserId(userId));
+    // If you want to fetch all todos, you can use fetchTodos() instead
+  }, [dispatch, userId]);
 
   return (
     <>
-      {todos.length === 0 && (
+      {userTodos.length === 0 && (
         <div className="w-full h-full flex justify-center items-center text-lg font-bold">
           No data returned
         </div>
@@ -88,7 +97,7 @@ const TodoItem = () => {
       {filteredTodos.map((todo) => (
         <div
           key={todo.id}
-          className="flex justify-between items-center *:p-2  *:text-left *:text-xs *:font-medium"
+          className="flex justify-between items-center p-2  *:text-left *:text-xs *:font-medium"
         >
           {editingTodoId === todo.id && (
             <EditTodo
@@ -98,44 +107,47 @@ const TodoItem = () => {
               onClose={closeEditModal}
             />
           )}
-          
-          <div className="w-3/4">{todo.todo}</div>
-          <div className="w-max">{todo.isCompleted ? "Completed" : "Pending"}</div>
-          <div>{fullDate}</div>
-          <div className="flex justify-center items-center gap-2">
-            <Button
-              title=""
-              onClick={() => handleEditClick(todo.id)}
-              disabled={false}
-              styleClass="w-6 h-6 flex justify-center items-center rounded-md bg-indigo-50 hover:bg-indigo-200"
-            >
-              <FaRegEdit className="text-lg text-indigo-500" />
-            </Button>
-
-            <Button
-              title=""
-              onClick={() => handleDeleteTodo(todo.id)}
-              disabled={false}
-              styleClass="w-6 h-6 flex justify-center items-center rounded-md bg-indigo-50 hover:bg-indigo-200"
-            >
-              <RiDeleteBin6Line className="text-lg text-red-500" />
-            </Button>
-
-            {!todo.isCompleted && (
-              <Button
-                title=""
-                onClick={() => handleMarkTodo(todo.id, todo.todo, true)}
-                disabled={false}
-                styleClass="w-6 h-6 flex justify-center items-center rounded-md bg-indigo-50 hover:bg-indigo-200"
-              >
-                <IoMdCheckmarkCircleOutline className="text-lg text-green-500" />
-              </Button>
-            )}
+          <div className="item-wrapper">
+            <div className="todo-item-wrapper w-full h-10 flex justify-center items-center  bg-violet-500">
+              <div className="todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-white">
+                <div className="w-4 h-full flex justify-center items-center">
+                  <Input
+                    type="checkbox"
+                    name="todo"
+                    value=""
+                    styleClass="w-6 h-6"
+                    error={false}
+                    onChange={() => handleMarkTodo(todo.id,!todo.isCompleted)}
+                  />
+                </div>
+                <div className="todo-left flex items-center w-full h-full ml-4">
+                  <p className="w-max text-wrap">This is testing todo!</p>
+                </div>
+                <div className="todo-right w-20 flex justify-evenly items-center h-full">
+                  <Button
+                    title=""
+                    onClick={() => handleEditClick(todo.id)}
+                    // onClick={() => {}}
+                    disabled={false}
+                    styleClass="w-6 h-6 flex justify-center items-center"
+                  >
+                    <FaRegEdit className="text-lg text-indigo-500" />
+                  </Button>
+                  <Button
+                    title=""
+                    onClick={() => handleDeleteTodo(todo.id)}
+                    // onClick={() => {}}
+                    disabled={false}
+                    styleClass="w-6 h-6 flex justify-center items-center"
+                  >
+                    <RiDeleteBin6Line className="text-lg text-red-500" />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ))}
     </>
   );
 };
-
-export default TodoItem;
