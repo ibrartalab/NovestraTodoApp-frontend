@@ -52,7 +52,7 @@ const LoginForm = () => {
     console.log("Login response data:", response);
     if (response?.status == 200) {
       // Redirect to dashboard after successful login
-      navigate(`/dashboard/${response.data.user.userName}`, { replace: true });
+      navigate(`/dashboard/${response.data.user.userName}/todos`, { replace: true });
     }
   };
 

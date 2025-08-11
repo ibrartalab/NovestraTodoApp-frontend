@@ -4,7 +4,6 @@ import Button from "../Button";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { SearchContext } from "../../context/SearchContext";
-import { ThemeContext } from "../../context/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
 import EditTodo from "./EditTodo";
 import {
@@ -14,19 +13,22 @@ import {
   fetchTodos,
 } from "../../features/todos/todoSlice";
 import type { MarkTodoInput} from "../../features/todos/types";
+import { Loader } from "../Loader";
 
 export const TodoItem = () => {
   const { searchParam, filters } = useContext(SearchContext);
-  const { text } = useContext(ThemeContext);
   const { userTodos } = useAppSelector((state) => state.todos);
   const userId = useAppSelector((state) => state.auth.userId);
+  const loading = useAppSelector((state) => state.todos.loading);
   const dispatch = useAppDispatch();
   const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
 
+  // Function to handle editing a todo item
   const handleEditClick = (id: number) => {
     setEditingTodoId(id);
   };
 
+  // Function to close the edit modal
   const closeEditModal = () => {
     setEditingTodoId(null);
   };
@@ -46,14 +48,10 @@ export const TodoItem = () => {
     return matchSearch && matchState;
   });
 
-  // const today = new Date();
-  // const fullDate = today.toLocaleDateString("en-US", {
-  //   year: "numeric",
-  //   month: "numeric",
-  //   day: "numeric",
-  // });
-
-  const handleMarkTodo = async (id: number,status: boolean) => {
+  // Function to handle marking a todo item as completed or active
+  // This function will be called when the user clicks the checkbox
+  // It updates the todo item's status and completed date
+  const handleMarkTodo = async (id: number,status: boolean,userId:number) => {
     try {
       const data: MarkTodoInput = {
         isCompleted: status,
@@ -61,13 +59,18 @@ export const TodoItem = () => {
       };
       const response = await dispatch(updateTodo({ id, data }));
       if (response.meta.requestStatus === "fulfilled") {
-        dispatch(fetchTodos());
+        if(userId){
+
+          await dispatch(fetchTodosByUserId(userId));
+        }
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+  // Function to handle deleting a todo item
+  // This function will be called when the user clicks the delete button
   const handleDeleteTodo = async (id: number) => {
     try {
       await dispatch(deleteTodo(id));
@@ -76,9 +79,10 @@ export const TodoItem = () => {
     }
   };
 
-  useEffect(() => {
-    // Fetch todos by user ID when the component mounts
+  //// Fetch todos by user ID when the component mounts
     // Assuming you have a userId available in your Redux store or context
+  useEffect(() => {
+    
     if (!userId) {
       console.error("User ID is not available", userId);
       return;
@@ -89,6 +93,9 @@ export const TodoItem = () => {
 
   return (
     <>
+    {loading && (
+      <Loader/>
+    )}
       {userTodos.length === 0 && (
         <div className="w-full flex justify-center items-center text-lg font-bold">
           No data returned
@@ -97,7 +104,7 @@ export const TodoItem = () => {
       {filteredTodos.map((todo) => (
         <div
           key={todo.id}
-          className="py-2"
+          className={`py-2`}
         >
           {editingTodoId === todo.id && (
             <EditTodo
@@ -109,7 +116,7 @@ export const TodoItem = () => {
           )}
           <div className="item-wrapper">
             <div className="todo-item-wrapper w-full h-10 flex justify-center items-center">
-              <div className="todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-gray-100">
+              <div className={`todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-gray-200 text-black`}>
                 <div className="w-4 h-full flex justify-center items-center">
                   <Input
                     type="checkbox"
@@ -117,7 +124,7 @@ export const TodoItem = () => {
                     value=""
                     styleClass="w-6 h-6"
                     error={false}
-                    onChange={() => handleMarkTodo(todo.id,!todo.isCompleted)}
+                    onChange={() => handleMarkTodo(todo.id,!todo.isCompleted,userId)}
                   />
                 </div>
                 <div className="todo-left flex items-center w-full h-full ml-4">

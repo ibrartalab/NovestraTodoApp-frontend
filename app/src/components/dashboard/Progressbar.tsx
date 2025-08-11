@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../hooks/redux/reduxHooks";
 
-export const Progressbar = () => {
+const Progressbar = () => {
   const {totalTodos,totalCompleted} = useAppSelector((state) => state.todos);
   const [progress, setProgress] = useState(0);
     useEffect(() => {
@@ -11,7 +11,7 @@ export const Progressbar = () => {
         } else {
         setProgress(0);
         }
-    }, [totalTodos, totalCompleted]);
+    }, [totalTodos, totalCompleted,setProgress ]);
 
 //    const progressBarWidth = Math.round((totalCompleted / totalTodos * 100));
 //   // Ensure progress bar width is between 0 and 100
@@ -22,7 +22,7 @@ export const Progressbar = () => {
     console.log(progress, totalCompleted, totalTodos);
   return (
     <>
-      <div className="progress w-60 flex items-center gap-4 mt-4">
+      <div className="progress w-full flex items-center gap-2 mt-4">
         <p className="text-sm">Progress</p>
         <div className={`progress-bar rounded-full w-full h-full bg-gray-200`}>
           <div
@@ -37,3 +37,5 @@ export const Progressbar = () => {
     </>
   );
 };
+
+export default Progressbar;

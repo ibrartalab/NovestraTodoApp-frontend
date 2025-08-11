@@ -10,6 +10,7 @@ import UserProvider from "./context/UserContext";
 import { useAppSelector } from "./hooks/redux/reduxHooks";
 import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "./components/dashboard/layout/DashboardLayout";
+import { Analytics } from "./pages/dashboard/Analytics";
 // This is the main application file where we set up routing and lazy loading of components
 // The Suspense component is used to handle loading states for lazy-loaded components
 
@@ -46,7 +47,7 @@ function App() {
                       <Route path="/signup" element={<SignupPage />} />
                       <Route path="/login" element={<LoginPage />} />
                       <Route
-                      path="/dashboard/:userName"
+                      path="/dashboard/:userName/"
                       element={
                         <PrivateRoutes>
                           <DashboardLayout />
@@ -54,8 +55,9 @@ function App() {
                       }
                       >
                         {/* Index route for dashbiard */}
-                        <Route index element={<UserDashbaord />} />
+                        <Route index path="todos" element={<UserDashbaord />} />
                         {/* Add more nested routes here if needed */}
+                        <Route path="analytics" element={<Analytics/>}/>
                       </Route>
                     </Routes>
                   </Suspense>
