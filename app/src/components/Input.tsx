@@ -5,6 +5,7 @@ interface InputProps {
     label?: string;
     placeholder?: string;
     type: InputTypes;
+    id:string;
     name: string;
     value: string | number | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,12 +16,13 @@ interface InputProps {
     pattern?: string;
 }
 
-const  Input = ({ label,placeholder, type, name, value, onChange,length, error,errorMessage,styleClass,pattern} : InputProps) => {
+const  Input = ({ label,placeholder, type,id, name, value, onChange,length, error,errorMessage,styleClass,pattern} : InputProps) => {
     
     return (
         <div className="input-group w-full  flex flex-col my-2">
             {label && <label className="input-group_label text-sm font-semibold text-gray-700 mb-1">{label}</label>}
             <input
+            id={id}
             className={`input-group_input_field_${name} min-w-4 min-h-4 border-2 border-gray-200 rounded-md outline-none indent-2 caret-indigo-600 placeholder:text-sm ${styleClass}`}
             type={type} name={name} value={value}
             maxLength={length}
