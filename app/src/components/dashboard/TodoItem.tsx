@@ -119,12 +119,13 @@ export const TodoItem = () => {
               <div className={`todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-gray-200 text-black`}>
                 <div className="w-4 h-full flex justify-center items-center">
                   <Input
+                  id="marktodo"
                     type="checkbox"
                     name="todo"
                     value=""
                     styleClass="w-6 h-6"
                     error={false}
-                    onChange={() => handleMarkTodo(todo.id,!todo.isCompleted,userId)}
+                    onChange={() => {}}
                   />
                 </div>
                 <div className="todo-left flex items-center w-full h-full ml-4">

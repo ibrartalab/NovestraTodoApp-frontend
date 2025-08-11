@@ -72,7 +72,7 @@ const SignUpForm = () => {
             className="form_fields "
             onSubmit={(e) => e.preventDefault()}
           >
-            <div className="email_password_confirm-password  flex flex-col *:w-80 *:h-12">
+            <div className="email_password_confirm-password  flex flex-col *:w-80">
               <h1 className="text-lg font-medium text-center">
                 Create Your Account
               </h1>
@@ -83,7 +83,7 @@ const SignUpForm = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                styleClass="text-black"
+                styleClass="text-black h-8"
               />
               <Input
                 label="Last Name"
@@ -92,7 +92,7 @@ const SignUpForm = () => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                styleClass="text-black"
+                styleClass="text-black h-8"
               />
               <Input
                 label="Username"
@@ -101,7 +101,7 @@ const SignUpForm = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                styleClass="text-black"
+                styleClass="text-black h-8"
               />
               <Input
                 label="Email"
@@ -110,7 +110,7 @@ const SignUpForm = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                styleClass="text-black"
+                styleClass="text-black h-8"
               />
               <Input
                 label="Password"
@@ -119,7 +119,7 @@ const SignUpForm = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                styleClass="text-black"
+                styleClass="text-black h-8"
               />
               <Button
               type='submit'

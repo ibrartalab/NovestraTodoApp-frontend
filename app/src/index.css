@@ -33,3 +33,8 @@ body {
   border: none;
   border-bottom: none;
 }
+
+#marktodo{
+  display: grid;
+  place-content: center;
+}
