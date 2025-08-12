@@ -1,24 +1,26 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Loader } from "./components/Loader";
+import { store } from "./store/store";
+import { Provider } from "react-redux";
 // import UserProvider, { UserContext } from './context/UserContext';
 import SearchContextProvider from "./context/SearchContext";
 import ThemeContextProvider from "./context/ThemeContext";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
 import UserProvider from "./context/UserContext";
 import { useAppSelector } from "./hooks/redux/reduxHooks";
 import { Navigate } from "react-router-dom";
 import { DashboardLayout } from "./components/dashboard/layout/DashboardLayout";
-import { Analytics } from "./pages/dashboard/Analytics";
+
+
 // This is the main application file where we set up routing and lazy loading of components
 // The Suspense component is used to handle loading states for lazy-loaded components
-
 const HomePage = lazy(() => import("./pages/Home"));
 const LoginPage = lazy(() => import("./pages/Login"));
 const SignupPage = lazy(() => import("./pages/Signup"));
 // const UserDashbaord = lazy(() => import("./pages/Dashboard"));
 const UserDashbaord = lazy(() => import("./pages/dashboard/DashboardHome"));
+const AnalyticsPage = lazy(() => import("./pages/dashboard/Analytics"));
+const BinPage = lazy(() => import("./pages/dashboard/Bin"));
 
 function App() {
   
@@ -57,7 +59,8 @@ function App() {
                         {/* Index route for dashbiard */}
                         <Route index path="todos" element={<UserDashbaord />} />
                         {/* Add more nested routes here if needed */}
-                        <Route path="analytics" element={<Analytics/>}/>
+                        <Route path="analytics" element={<AnalyticsPage/>}/>
+                        <Route path="bin" element={<BinPage/>} />
                       </Route>
                     </Routes>
                   </Suspense>

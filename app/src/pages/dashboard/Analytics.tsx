@@ -2,7 +2,7 @@ import React from "react";
 // import Progressbar from "../../components/dashboard/ProgressBar";
 import { useAppSelector } from "../../hooks/redux/reduxHooks";
 
-export const Analytics = () => {
+const Analytics = () => {
   const {totalCompleted,totalPending,totalTodos} = useAppSelector((state) => state.todos);
   return (
     <>
@@ -80,3 +80,7 @@ function KPI({
     </div>
   );
 }
+
+export default Analytics;
+
+

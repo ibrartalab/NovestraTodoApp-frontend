@@ -34,7 +34,23 @@ body {
   border-bottom: none;
 }
 
-#marktodo{
-  display: grid;
-  place-content: center;
+input[type="checkbox"]{
+  display:flex;
+ justify-content: center;
+ align-items: center;
+  appearance: none;
+  border:1px solid black;
+  border-radius: 0;
+  margin: 0;
+}
+input[type="checkbox"]::before{
+  content: "✔";
+  /* width: 4px;
+  height: 4px; */
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  /* border:1px solid black; */
+}
+input[type="checkbox"]:checked::before{
+  transform: scale(1);
 }

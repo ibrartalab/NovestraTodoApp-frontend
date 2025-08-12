@@ -1,7 +1,8 @@
 export interface Todo {
-    id: number;
+  id: number;
   todo: string;
   isCompleted: boolean;
+  isRemoved: boolean;
   userId: number;
   createdAt: string;
   completedAt?: string;
@@ -10,18 +11,17 @@ export interface Todo {
 export interface UpdateTodoInput {
   todo: string;
   isCompleted: boolean;
+  isRemoved:boolean;
   completedAt?: string;
 }
 
-export interface MarkTodoInput {
-  isCompleted: boolean;
-  completedAt?: string;
-}
+
 
 export interface AddTodoResponse {
   id: number;
   todo: string;
   isCompleted: boolean;
+  isRemoved: boolean;
   userId: number;
   createdAt: string;
   completedAt?: string;

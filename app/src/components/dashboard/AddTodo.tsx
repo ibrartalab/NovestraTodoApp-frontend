@@ -30,6 +30,7 @@ export const AddTodo = () => {
     const data = {
       Todo: todoName,
       IsCompleted: false,
+      IsRemoved:false,
       UserId: userId,
       CreatedAt: new Date().toISOString(),
       CompletedAt: new Date().toISOString(),

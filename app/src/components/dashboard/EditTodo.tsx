@@ -1,31 +1,35 @@
 import { MdOutlineCancel } from "react-icons/md";
 import Button from "../Button";
 import Input from "../Input";
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
-import type { UpdateTodoInput } from "../../features/todos/types";
+import {  useState } from "react";
+import { useAppDispatch } from "../../hooks/redux/reduxHooks";
+import type { Todo, UpdateTodoInput } from "../../features/todos/types";
 import { updateTodo , fetchTodosByUserId } from "../../features/todos/todoSlice";
 
 
 interface EditTodoProps {
   id: number;
-  initialValue: string;
-  status: boolean;
+  requestedData:Todo;
   onClose: () => void;
 }
 
-const EditTodo = ({ id, initialValue, status, onClose }: EditTodoProps) => {
-  const [editedTodo, setEditedTodo] = useState(initialValue);
-  const userId  = useAppSelector((state) => state.auth.userId);
+const EditTodo = ({id, requestedData, onClose }: EditTodoProps) => {
+  const [editedTodo, setEditedTodo] = useState(requestedData.todo);
+  // const userId  = useAppSelector((state) => state.auth.userId ? state.auth.userId : null);
   const dispatch = useAppDispatch();
 
   const handleUpdate = async (userId:number) => {
     try {
       const data: UpdateTodoInput = {
         todo: editedTodo,
-        isCompleted: status,
+        isCompleted: requestedData.isCompleted,
+        isRemoved:requestedData.isRemoved,
         completedAt: status ? new Date().toISOString() : undefined,
       };
+
+      if(!userId){
+        throw new Error("userId must to provide");
+      }
 
       const response = await dispatch(updateTodo({ id, data }));
       if (response.meta.requestStatus === "fulfilled") {
@@ -62,7 +66,7 @@ const EditTodo = ({ id, initialValue, status, onClose }: EditTodoProps) => {
         <div className="flex justify-end mt-4">
           <Button
             title="Update"
-            onClick={() => handleUpdate(userId)}
+            onClick={() => handleUpdate(requestedData.userId)}
             disabled={!editedTodo.trim()}
             styleClass="w-24 h-10 rounded-md text-white bg-indigo-600 hover:bg-indigo-500"
           />

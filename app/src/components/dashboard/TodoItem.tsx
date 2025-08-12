@@ -8,12 +8,11 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
 import EditTodo from "./EditTodo";
 import {
   fetchTodosByUserId,
-  updateTodo,
-  deleteTodo,
-  fetchTodos,
+  updateTodo
 } from "../../features/todos/todoSlice";
-import type { MarkTodoInput} from "../../features/todos/types";
+import type { UpdateTodoInput} from "../../features/todos/types";
 import { Loader } from "../Loader";
+import  { useFetchUserTodos } from "../../hooks/useFetchUserTodos";
 
 export const TodoItem = () => {
   const { searchParam, filters } = useContext(SearchContext);
@@ -22,6 +21,7 @@ export const TodoItem = () => {
   const loading = useAppSelector((state) => state.todos.loading);
   const dispatch = useAppDispatch();
   const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
+  const fetchAll  = useFetchUserTodos();
 
   // Function to handle editing a todo item
   const handleEditClick = (id: number) => {
@@ -39,6 +39,7 @@ export const TodoItem = () => {
       .includes(searchParam.toLowerCase());
     let matchState = true;
 
+
     if (filters === "active") {
       matchState = !todo.isCompleted;
     } else if (filters === "completed") {
@@ -51,16 +52,17 @@ export const TodoItem = () => {
   // Function to handle marking a todo item as completed or active
   // This function will be called when the user clicks the checkbox
   // It updates the todo item's status and completed date
-  const handleMarkTodo = async (id: number,status: boolean,userId:number) => {
+  const handleMarkTodo = async (id:number,requestData:UpdateTodoInput) => {
     try {
-      const data: MarkTodoInput = {
-        isCompleted: status,
+      const data = {
+        todo:requestData.todo,
+        isCompleted: !requestData.isCompleted,
+        isRemoved:requestData.isRemoved,
         completedAt: new Date().toISOString(),
       };
       const response = await dispatch(updateTodo({ id, data }));
       if (response.meta.requestStatus === "fulfilled") {
         if(userId){
-
           await dispatch(fetchTodosByUserId(userId));
         }
       }
@@ -71,9 +73,17 @@ export const TodoItem = () => {
 
   // Function to handle deleting a todo item
   // This function will be called when the user clicks the delete button
-  const handleDeleteTodo = async (id: number) => {
+  const handleDeleteTodo = async (id: number,todo:UpdateTodoInput) => {
     try {
-      await dispatch(deleteTodo(id));
+      const data= {
+        ...todo,
+      isRemoved:true,
+      }
+      const response = await dispatch(updateTodo({id,data}));
+      if(response.meta.requestStatus === "fulfilled"){
+        fetchAll();
+      }
+
     } catch (error) {
       console.error("Delete failed", error);
     }
@@ -108,9 +118,8 @@ export const TodoItem = () => {
         >
           {editingTodoId === todo.id && (
             <EditTodo
-              id={todo.id}
-              initialValue={todo.todo}
-              status={todo.isCompleted}
+            id={todo.id}
+              requestedData={todo}
               onClose={closeEditModal}
             />
           )}
@@ -125,11 +134,11 @@ export const TodoItem = () => {
                     value=""
                     styleClass="w-6 h-6"
                     error={false}
-                    onChange={() => {}}
+                    onChange={() => handleMarkTodo(todo.id,todo)}
                   />
                 </div>
                 <div className="todo-left flex items-center w-full h-full ml-4">
-                  <p className="w-max text-wrap">{todo.todo}</p>
+                  <p className={`w-max text-wrap ${todo.isCompleted ? 'line-through' : ''}`}>{todo.todo}</p>
                 </div>
                 <div className="todo-right w-20 flex justify-evenly items-center h-full">
                   <Button
@@ -143,7 +152,7 @@ export const TodoItem = () => {
                   </Button>
                   <Button
                     title=""
-                    onClick={() => handleDeleteTodo(todo.id)}
+                    onClick={() => handleDeleteTodo(todo.id,todo)}
                     // onClick={() => {}}
                     disabled={false}
                     styleClass="w-6 h-6 flex justify-center items-center"
