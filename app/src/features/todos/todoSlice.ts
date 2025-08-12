@@ -16,6 +16,7 @@ interface TodosState {
   totalTodos: number;
   totalCompleted: number;
   totalPending: number;
+  totalInBin:number;
 }
 
 const initialState: TodosState = {
@@ -26,6 +27,7 @@ const initialState: TodosState = {
   totalTodos: 0,
   totalCompleted: 0,
   totalPending: 0,
+  totalInBin:0
 };
 
 // Async thunk: fetch all todos
@@ -118,6 +120,9 @@ const todosSlice = createSlice({
           ).length;
           state.totalPending = action.payload.filter(
             (t) => !t.isCompleted
+          ).length;
+          state.totalInBin = action.payload.filter(
+            (t) => t.isRemoved
           ).length;
         }
       )

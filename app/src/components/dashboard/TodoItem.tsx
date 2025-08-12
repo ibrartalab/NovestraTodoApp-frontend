@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import Input from "../Input";
 import Button from "../Button";
-import { FaRegEdit } from "react-icons/fa";
+import { FaCheck, FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { SearchContext } from "../../context/SearchContext";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
@@ -37,8 +36,8 @@ export const TodoItem = () => {
     const matchSearch = todo.todo
       ?.toLowerCase()
       .includes(searchParam.toLowerCase());
-    let matchState = true;
-
+    let matchState:boolean = true;
+    const matchSecondState:boolean = !todo.isRemoved;
 
     if (filters === "active") {
       matchState = !todo.isCompleted;
@@ -46,7 +45,7 @@ export const TodoItem = () => {
       matchState = todo.isCompleted;
     }
 
-    return matchSearch && matchState;
+    return matchSearch && matchState && matchSecondState;
   });
 
   // Function to handle marking a todo item as completed or active
@@ -126,16 +125,16 @@ export const TodoItem = () => {
           <div className="item-wrapper">
             <div className="todo-item-wrapper w-full h-10 flex justify-center items-center">
               <div className={`todo w-3/5 h-10 p-2 flex justify-between rounded-md bg-gray-200 text-black`}>
-                <div className="w-4 h-full flex justify-center items-center">
-                  <Input
-                  id="marktodo"
-                    type="checkbox"
-                    name="todo"
-                    value=""
-                    styleClass="w-6 h-6"
-                    error={false}
-                    onChange={() => handleMarkTodo(todo.id,todo)}
-                  />
+                <div className="w-8 h-full flex justify-center items-center">
+                  <Button
+                  type="button"
+                  title=""
+                  onClick={() => handleMarkTodo(todo.id,todo)}
+                  disabled={false}
+                  styleClass="w-full h-full border-2 border-black flex justify-center items-center"
+                  >
+                    {todo.isCompleted ? (<FaCheck className="text-lg text-green-500"/>) : ''}
+                  </Button>
                 </div>
                 <div className="todo-left flex items-center w-full h-full ml-4">
                   <p className={`w-max text-wrap ${todo.isCompleted ? 'line-through' : ''}`}>{todo.todo}</p>

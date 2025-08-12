@@ -3,7 +3,7 @@ import React from "react";
 import { useAppSelector } from "../../hooks/redux/reduxHooks";
 
 const Analytics = () => {
-  const {totalCompleted,totalPending,totalTodos} = useAppSelector((state) => state.todos);
+  const {totalCompleted,totalPending,totalTodos,totalInBin} = useAppSelector((state) => state.todos);
   return (
     <>
       <div className="analytics-dashbaord-wrapper py-4 w-full h-full">
@@ -44,7 +44,7 @@ const Analytics = () => {
           />
           <KPI
             title="Tasks in Bin"
-            value={0}
+            value={totalInBin}
             label="Deleted but not permanently removed"
             style="bg-gradient-to-b from-red-500 to-red-300"
           />
