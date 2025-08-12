@@ -1,9 +1,7 @@
 import { NavLink } from "react-router";
-
-// import { UserContext } from "../context/UserContext";
-import { useAppDispatch, useAppSelector } from "../hooks/redux/reduxHooks";
-import { logOut } from "../features/auth/authSlice";
-import { ThemeMode } from "./ThemeMode";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
+import { logOut } from "../../features/auth/authSlice";
+import { ThemeMode } from "../ThemeMode";
 
 export const Header = () => {
   return (
@@ -16,9 +14,8 @@ export const Header = () => {
   );
 };
 
-// Sub components headers for the app
+// Sub component-navbar
 function Navbar() {
-  // const { user, userLogout } = useContext(UserContext);
   const userName = useAppSelector((state) => state.auth.userName);
   const dispatch = useAppDispatch();
   return (
@@ -62,7 +59,7 @@ function Navbar() {
           </NavLink>
         </li>
         <li className="*:cursor-pointer">
-          <ThemeMode/>
+          <ThemeMode />
         </li>
       </ul>
     </>

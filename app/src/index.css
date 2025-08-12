@@ -54,3 +54,10 @@ input[type="checkbox"]::before{
 input[type="checkbox"]:checked::before{
   transform: scale(1);
 }
+
+.progress-bar-container::-webkit-progress-bar{
+  background-color: rgb(216, 216, 216);
+}
+.progress-bar-container::-webkit-progress-value{
+  background-color: #6366f1;
+}

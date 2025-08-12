@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { Link, useNavigate } from "react-router";
-// import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
 import { Loader } from "../components/Loader";
 import type { AuthLoginInput } from "../features/auth/types";

@@ -143,7 +143,6 @@ export const TodoItem = () => {
                   <Button
                     title=""
                     onClick={() => handleEditClick(todo.id)}
-                    // onClick={() => {}}
                     disabled={false}
                     styleClass="w-6 h-6 flex justify-center items-center"
                   >
@@ -152,7 +151,6 @@ export const TodoItem = () => {
                   <Button
                     title=""
                     onClick={() => handleDeleteTodo(todo.id,todo)}
-                    // onClick={() => {}}
                     disabled={false}
                     styleClass="w-6 h-6 flex justify-center items-center"
                   >

@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router";
 import Button from "../components/Button";
-import { Layout } from "../components/Layout";
+import { Layout } from "../components/layout/Layout";
 
 const Home = () => {
-
   const navigate = useNavigate();
   return (
     <Layout>
       <div className="hero-wrapper mt-20 px-24 flex justify-between items-center">
         <div className="hero-left w-1/2">
           <h1 className="text-4xl font-bold mb-4">
-            Master Your Productivity with <span className="text-indigo-600 italic">Novestra Todo</span>
+            Master Your Productivity with{" "}
+            <span className="text-indigo-600 italic">Novestra Todo</span>
           </h1>
           <p className="text-lg">
             Take control of your day and achieve more with Novestra Todo App.
@@ -22,17 +22,13 @@ const Home = () => {
           <Button
             title="Organize Your Tasks Now"
             disabled={false}
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate("/signup")}
             styleClass="mt-4 p-4 max-w rounded-md bg-indigo-600 text-white hover:bg-indigo-400"
             type="button"
-            />
+          />
         </div>
         <div className="hero-right w-1/2 flex justify-end">
-          <img
-            src="./hero.svg"
-            alt="hero-section-image"
-            className=" w-full"
-          />
+          <img src="./hero.svg" alt="hero-section-image" className=" w-full" />
         </div>
       </div>
     </Layout>

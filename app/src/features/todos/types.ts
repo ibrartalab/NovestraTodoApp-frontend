@@ -15,8 +15,6 @@ export interface UpdateTodoInput {
   completedAt?: string;
 }
 
-
-
 export interface AddTodoResponse {
   id: number;
   todo: string;

@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-// import useFormValidator from "../../../hooks/useFormValidator";
-// import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router";
 import { Loader } from "../components/Loader";

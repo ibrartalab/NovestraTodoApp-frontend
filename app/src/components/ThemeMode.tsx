@@ -2,6 +2,7 @@ import React from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 
+// This component act as a Theme Toggle- to switch between Dark and Light Mode
 export const ThemeMode = () => {
   const { theme, setTheme, setText } = React.useContext(ThemeContext);
   return (

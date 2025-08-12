@@ -15,9 +15,9 @@ interface EditTodoProps {
 
 const EditTodo = ({id, requestedData, onClose }: EditTodoProps) => {
   const [editedTodo, setEditedTodo] = useState(requestedData.todo);
-  // const userId  = useAppSelector((state) => state.auth.userId ? state.auth.userId : null);
   const dispatch = useAppDispatch();
 
+  // Handle update todo item
   const handleUpdate = async (userId:number) => {
     try {
       const data: UpdateTodoInput = {
@@ -36,16 +36,13 @@ const EditTodo = ({id, requestedData, onClose }: EditTodoProps) => {
         if(userId){
           await dispatch(fetchTodosByUserId(userId));
         }
-        onClose(); // close modal
+        // close modal
+        onClose();
       }
     } catch (error) {
       console.error("Update failed", error);
     }
   };
-
-  // useEffect(()=>{
-  //   dispatch(fetchTodosByUserId(id))
-  // },[dispatch,id])
 
   return (
     <div className="w-full h-full bg-gray-400/60 fixed top-0 left-0 z-50 flex justify-center items-center">

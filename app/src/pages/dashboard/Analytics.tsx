@@ -1,6 +1,5 @@
-import React from "react";
-// import Progressbar from "../../components/dashboard/ProgressBar";
 import { useAppSelector } from "../../hooks/redux/reduxHooks";
+import Progressbar from "../../components/dashboard/Progressbar";
 
 const Analytics = () => {
   const {totalCompleted,totalPending,totalTodos,totalInBin} = useAppSelector((state) => state.todos);
@@ -21,7 +20,7 @@ const Analytics = () => {
           </p>
         </div>
         <div className="progressabr mt-12 pr-14 w-full h-12 flex justify-start">
-          {/* <Progressbar /> */}
+          <Progressbar />
         </div>
         <div className="kpis-card-wrapper flex justify-left items-center gap-4 mt-8">
           <KPI

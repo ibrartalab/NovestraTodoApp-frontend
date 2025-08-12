@@ -1,24 +1,23 @@
-import { useContext, useEffect, useState } from "react";
-import { Layout } from "../components/Layout";
+import { useEffect, useState } from "react";
+import { Layout } from "../components/layout/Layout";
 import { SearchInput } from "../components/dashboard/SearchInput";
-import { Summary } from "../components/dashboard/Summary";
 import TodoList from "../components/dashboard/TodoList";
-import { UserContext } from "../context/UserContext";
+import { useAppSelector } from "../hooks/redux/reduxHooks";
 
 const Dashboard = () => {
   const [greeting, setGreeting] = useState<string>("");
-  const { user } = useContext(UserContext);
+  const usrname = useAppSelector((state) => state.auth.userName);
 
   useEffect(() => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
-      setGreeting(`Good Morning ${user}`);
+      setGreeting(`Good Morning ${usrname}`);
     } else if (currentHour < 18) {
-      setGreeting(`Good Afternoon ${user}`);
+      setGreeting(`Good Afternoon ${usrname}`);
     } else {
-      setGreeting(`Good Evening ${user}`);
+      setGreeting(`Good Evening ${usrname}`);
     }
-  }, [user]);
+  }, [usrname]);
 
   return (
     <Layout>
@@ -33,7 +32,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="dashboard-internal-layer w-full h-[450px] overflow-hidden flex flex-col gap-2">
-          <Summary />
           <TodoList />
         </div>
       </div>

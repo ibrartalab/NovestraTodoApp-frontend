@@ -7,7 +7,7 @@ import {
 import * as todoApi from "../../api/todoAPI";
 import type { Todo, UpdateTodoInput } from "./types";
 
-// Define the initial state
+
 interface TodosState {
   todos: Todo[];
   userTodos: Todo[];
@@ -18,7 +18,7 @@ interface TodosState {
   totalPending: number;
   totalInBin:number;
 }
-
+// Define the initial state
 const initialState: TodosState = {
   todos: [],
   userTodos: [],

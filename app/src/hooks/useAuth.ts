@@ -13,20 +13,18 @@ export function useAuth() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  //Handle user login
   const login = async (input: AuthLoginInput) => {
     setLoading(true);
     setError(null);
     try {
-
       const response = await apiLogin(input);
-
       // Add some basic validation
       if(!response.data){
         throw new Error("Invalid response data");
       }else if(response.data.user.userName === "" || response.data.token === ""){
         throw new Error("Username or token is empty");
       }
-
       // Dispatch credentials to Redux store
       dispatch(
         setCredentials({
@@ -35,10 +33,6 @@ export function useAuth() {
           userId: response.data.user.id,
         })
       );
-
-      // console.log("Login successful inside useAuth:", response.data);
-      // console.log("Login response status code:", response.status);
-
       return response;
     } catch (err: unknown) {
       setError("Login failed. Please check your credentials.");
@@ -48,6 +42,7 @@ export function useAuth() {
     }
   };
 
+  // Handle user signup
   const signup = async (input: AuthSignupInput) => {
     setLoading(true);
     setError(null);

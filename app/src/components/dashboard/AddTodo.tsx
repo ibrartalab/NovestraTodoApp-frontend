@@ -1,13 +1,15 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
-import { createTodo, fetchTodosByUserId } from "../../features/todos/todoSlice";
+import { createTodo } from "../../features/todos/todoSlice";
 import Input from "../Input";
 import Button from "../Button";
+import { useFetchUserTodos } from "../../hooks/useFetchUserTodos";
 
 export const AddTodo = () => {
   const [todoName, setTodoName] = useState<string>("");
   const { userId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const fetchAll = useFetchUserTodos();
 
   // Handle input change
   // This function updates the state with the value from the input field
@@ -39,21 +41,6 @@ export const AddTodo = () => {
     fetchAll();
     setTodoName("");
   };
-
-  const fetchAll = useCallback(async () => {
-    try {
-      if (!userId) {
-        console.error("User ID is not available", userId);
-        return;
-      }
-      const response = await dispatch(fetchTodosByUserId(userId));
-      if (response.meta.requestStatus === "fulfilled") {
-        console.log("Fetched all todos successfully");
-      }
-    } catch (error) {
-      console.error("Failed to fetch todos", error);
-    }
-  }, [dispatch, userId]);
 
   return (
     <div>
