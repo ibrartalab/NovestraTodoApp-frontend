@@ -112,8 +112,8 @@ export const TodoItem = () => {
     <>
       {loading && <Loader />}
       {userTodos.length === 0 && (
-        <div className="w-full flex justify-center items-center text-lg font-bold">
-          No data returned
+        <div className="w-full h-full flex justify-center items-center text-lg font-bold">
+          You haven't added any tasks yet. Get started by adding your first to-do!
         </div>
       )}
       {filteredTodos.map((todo) => (
