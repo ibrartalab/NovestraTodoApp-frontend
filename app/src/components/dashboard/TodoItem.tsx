@@ -57,6 +57,7 @@ export const TodoItem = () => {
       const updatePayload:UpdateTodoPayload = {
         id:todoToMark.id,
         updatedFields:{
+          todo:todoToMark.todo,
           isCompleted:!todoToMark.isCompleted,
           completedAt:!todoToMark.completedAt ? new Date().toISOString() :  null,
         },

@@ -124,7 +124,7 @@ const todosSlice = createSlice({
             (t) => t.isCompleted
           ).length;
           state.totalPending = action.payload.filter(
-            (t) => !t.isCompleted
+            (t) => !t.isCompleted && !t.isRemoved
           ).length;
           state.totalInBin = action.payload.filter((t) => t.isRemoved).length;
         }
@@ -148,7 +148,7 @@ const todosSlice = createSlice({
           if (index !== -1) {
             arr[index] = updatedTodo;
 
-            if (action.payload.isCompleted) {
+            if (updatedTodo.isCompleted) {
               state.totalCompleted += 1;
               state.totalPending -= 1;
             } else {
@@ -156,12 +156,14 @@ const todosSlice = createSlice({
               state.totalPending += 1;
             }
 
-            if (!action.payload.isCompleted) {
-              if (action.payload.isRemoved) {
+            if (!updatedTodo.isCompleted) {
+              if (updatedTodo.isRemoved) {
                 state.totalInBin += 1;
                 state.totalPending -= 1;
               }
             }
+
+            
           }
         };
 
@@ -176,6 +178,7 @@ const todosSlice = createSlice({
 
         if (deleted) {
           state.totalTodos -= 1;
+          state.totalInBin -=1;
           if (deleted.isCompleted) {
             state.totalCompleted -= 1;
           } else {
