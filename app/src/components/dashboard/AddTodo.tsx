@@ -3,13 +3,16 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux/reduxHooks";
 import { createTodo } from "../../features/todos/todoSlice";
 import Input from "../Input";
 import Button from "../Button";
-import { useFetchUserTodos } from "../../hooks/useFetchUserTodos";
+// import { useFetchUserTodos } from "../../hooks/useFetchUserTodos";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export const AddTodo = () => {
   const [todoName, setTodoName] = useState<string>("");
   const { userId } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const fetchAll = useFetchUserTodos();
+  // const fetchAll = useFetchUserTodos();
+
+  const axiosPrivate = useAxiosPrivate();
 
   // Handle input change
   // This function updates the state with the value from the input field
@@ -30,17 +33,24 @@ export const AddTodo = () => {
       throw new Error("User ID is not available");
     }
     const data = {
-      Todo: todoName,
-      IsCompleted: false,
-      IsRemoved:false,
-      UserId: userId,
-      CreatedAt: new Date().toISOString(),
-      CompletedAt: new Date().toISOString(),
+      todo: todoName,
+      userId: userId,
     };
-    await dispatch(createTodo(JSON.parse(JSON.stringify(data))));
-    fetchAll();
     setTodoName("");
+    await dispatch(
+      createTodo({ newTodo:data, axiosPrivate })
+    );
+    
   };
+
+  // useEffect(() => {
+  //     if (!userId) {
+  //       console.error("User ID is not available", userId);
+  //       return;
+  //     }
+  //     dispatch(fetchTodosByUserId({ userId, axiosPrivate }));
+  //     // If you want to fetch all todos, you can use fetchTodos() instead
+  //   }, [dispatch, userId, axiosPrivate]);
 
   return (
     <div>
@@ -62,7 +72,7 @@ export const AddTodo = () => {
             type="button"
             title="Add Task"
             disabled={false}
-            onClick={() => handleAddTask()}
+            onClick={handleAddTask}
             styleClass="w-24 h-10 flex justify-center items-center rounded-md bg-indigo-600 text-white text-xs hover:bg-indigo-400"
           />
         </div>

@@ -1,15 +1,30 @@
-import { axiosPrivate } from "../config/axiosInstance";
-import type { Todo, UpdateTodoInput } from "../features/todos/types";
+import type { AxiosInstance } from "axios";
+import type { CreateToDoPayload, DeleteTodoPayload, FetchTodosByUserIdPayload, UpdateTodoPayload} from "../features/todos/types";
 
 // Function to get all todos
-export const getTodos = () => axiosPrivate.get("/Todo/all");
+export const getTodos = async(axiosPrivate:AxiosInstance) => {
+    const response = await axiosPrivate.get("/Todo/all");
+    return response;
+};
 // Function to get a todo by ID
-export const addTodo = (data:Todo) => axiosPrivate.post("/Todo", data);
+export const addTodo = async(payload:CreateToDoPayload) => {
+    const response = await payload.axiosPrivate.post("/Todo", payload.newTodo);
+    return response.data;
+};
+
 // Function to update a todo
-export const updateTodo = (id:number, data:UpdateTodoInput) => axiosPrivate.put(`/Todo/${id}`, data);
+export const updateTodo = async(payload:UpdateTodoPayload) => {
+    const response = await payload.axiosPrivate.put(`/Todo/${payload.id}`, payload.updatedFields);
+    return response.data;
+};
 // Function to delete a todo
-export const deleteTodo = (id:number) => axiosPrivate.delete(`/Todo/${id}`);
-// Function to get a todo by ID
-export const getTodoById = (id: number) => axiosPrivate.get(`/Todo/${id}`);
+export const deleteTodo = async(payload:DeleteTodoPayload) => {
+    const response = await payload.axiosPrivate.delete(`/Todo/${payload.id}`);
+    return response.data;
+};
+
 // Function to get todos by user ID for a specific user
-export const getTodosByUserId = (userId: number) => axiosPrivate.get(`/Todo/user/${userId}`);
+export const getTodosByUserId = async(payload:FetchTodosByUserIdPayload) => {
+    const response = await payload.axiosPrivate.get(`/Todo/${payload.userId}`);
+    return response.data;
+};

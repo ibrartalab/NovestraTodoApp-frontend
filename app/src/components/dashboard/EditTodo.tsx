@@ -1,40 +1,46 @@
 import { MdOutlineCancel } from "react-icons/md";
 import Button from "../Button";
 import Input from "../Input";
-import {  useState } from "react";
+import { useState } from "react";
 import { useAppDispatch } from "../../hooks/redux/reduxHooks";
-import type { Todo, UpdateTodoInput } from "../../features/todos/types";
-import { updateTodo , fetchTodosByUserId } from "../../features/todos/todoSlice";
-
+import type { FetchTodosByUserIdPayload, Todo, UpdateTodoPayload } from "../../features/todos/types";
+import { updateTodo, fetchTodosByUserId } from "../../features/todos/todoSlice";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 interface EditTodoProps {
   id: number;
-  requestedData:Todo;
+  requestedData: Todo;
   onClose: () => void;
 }
 
-const EditTodo = ({id, requestedData, onClose }: EditTodoProps) => {
+const EditTodo = ({ id, requestedData, onClose }: EditTodoProps) => {
   const [editedTodo, setEditedTodo] = useState(requestedData.todo);
   const dispatch = useAppDispatch();
+  const axiosPrivate = useAxiosPrivate();
 
   // Handle update todo item
-  const handleUpdate = async (userId:number) => {
+  const handleUpdate = async (userId: string) => {
     try {
-      const data: UpdateTodoInput = {
-        todo: editedTodo,
-        isCompleted: requestedData.isCompleted,
-        isRemoved:requestedData.isRemoved,
-        completedAt: status ? new Date().toISOString() : undefined,
+      const updatePayload: UpdateTodoPayload = {
+        id: id,
+        updatedFields: {
+          todo: editedTodo,
+        },
+        axiosPrivate,
       };
 
-      if(!userId){
-        throw new Error("userId must to provide");
-      }
-
-      const response = await dispatch(updateTodo({ id, data }));
+      const response = await dispatch(updateTodo(updatePayload));
       if (response.meta.requestStatus === "fulfilled") {
-        if(userId){
-          await dispatch(fetchTodosByUserId(userId));
+        if (!userId) {
+          throw new Error("userId must to provide");
+        }
+
+        const fetchTodosPayload:FetchTodosByUserIdPayload = {
+          userId:userId,
+          axiosPrivate
+        }
+        if (userId) {
+          await dispatch(fetchTodosByUserId(fetchTodosPayload));
         }
         // close modal
         onClose();

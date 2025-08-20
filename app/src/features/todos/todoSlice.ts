@@ -1,13 +1,14 @@
-// features/todos/todosSlice.ts
+// src/feature/todos/todosSlice.ts
 import {
   createSlice,
   createAsyncThunk,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import * as todoApi from "../../api/todoAPI";
-import type { Todo, UpdateTodoInput } from "./types";
 
+import * as todoApi from "../../api/todoAPI"; // Ensure correct import paths
+import type { CreateToDoPayload, DeleteTodoPayload, FetchTodosByUserIdPayload, Todo, UpdateTodoPayload } from "./types";
 
+// --- State Interfaces ---
 interface TodosState {
   todos: Todo[];
   userTodos: Todo[];
@@ -16,9 +17,10 @@ interface TodosState {
   totalTodos: number;
   totalCompleted: number;
   totalPending: number;
-  totalInBin:number;
+  totalInBin: number;
 }
-// Define the initial state
+
+// --- Initial State ---
 const initialState: TodosState = {
   todos: [],
   userTodos: [],
@@ -27,170 +29,133 @@ const initialState: TodosState = {
   totalTodos: 0,
   totalCompleted: 0,
   totalPending: 0,
-  totalInBin:0
+  totalInBin: 0,
 };
 
-// Async thunk: fetch all todos
-export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
-  const response = await todoApi.getTodos();
-  return response.data;
-});
+// --- Async Thunks ---
 
 // Async thunk: fetch todos by user ID
 export const fetchTodosByUserId = createAsyncThunk(
   "todos/fetchTodosByUserId",
-  async (userId: number) => {
-    const response = await todoApi.getTodosByUserId(userId);
-    return response.data;
+  async (payload: FetchTodosByUserIdPayload, { rejectWithValue }) => {
+    try {
+      // todoApi.getTodosByUserId now expects the entire payload object
+      const todos = await todoApi.getTodosByUserId(payload);
+      return todos;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch user todos");
+    }
   }
 );
 
 // Async thunk: create a new todo
 export const createTodo = createAsyncThunk(
   "todos/createTodo",
-  async (newTodo: Todo) => {
-    const response = await todoApi.addTodo(newTodo);
-    return response.data;
+  async (payload: CreateToDoPayload, { rejectWithValue }) => {
+    try {
+      // todoApi.addTodo now expects the entire payload object
+      const todo = await todoApi.addTodo(payload);
+      return todo;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to create todo");
+    }
   }
 );
 
 // Async thunk: update an existing todo
 export const updateTodo = createAsyncThunk(
   "todos/updateTodo",
-  async ({ id, data }: { id: number; data: UpdateTodoInput }) => {
-    const response = await todoApi.updateTodo(id, data);
-    return { id, data: response.data };
+  async (payload: UpdateTodoPayload, { rejectWithValue }) => {
+    try {
+      // todoApi.updateTodo now expects the entire payload object
+      const updatedTodo = await todoApi.updateTodo(payload);
+      return updatedTodo; // Ensure API returns the full updated object
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to update todo");
+    }
   }
 );
 
 // Async thunk: delete a todo
 export const deleteTodo = createAsyncThunk(
   "todos/deleteTodo",
-  async (id: number) => {
-    await todoApi.deleteTodo(id);
-    return id;
+  async (payload: DeleteTodoPayload, { rejectWithValue }) => {
+    try {
+      // todoApi.deleteTodo now expects the entire payload object
+      await todoApi.deleteTodo(payload);
+      return payload.id; // Return the ID for reducer logic after successful deletion
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to delete todo");
+    }
   }
 );
 
+// --- Slice Definition ---
 const todosSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
-    // You can add sync reducers here if needed
     clearTodos: (state) => {
       state.todos = [];
       state.userTodos = [];
       state.totalTodos = 0;
       state.totalCompleted = 0;
       state.totalPending = 0;
+      state.totalInBin = 0;
+      state.error = null; // Clear error on clear
     },
+    // Optional: Add a specific reducer for optimistic updates if you need immediate UI feedback
+    // updateTodoOptimistic: (state, action: PayloadAction<Todo>) => {
+    //   const updatedTodo = action.payload;
+    //   const updateArray = (arr: Todo[]) => {
+    //     const index = arr.findIndex((t) => t.id === updatedTodo.id);
+    //     if (index !== -1) {
+    //       arr[index] = updatedTodo;
+    //     }
+    //   };
+    //   updateArray(state.todos);
+    //   updateArray(state.userTodos);
+    //   updateTodoCounts(state, state.userTodos);
+    // },
   },
   extraReducers: (builder) => {
+    // --- Specific Fulfilled Handling ---
     builder
-      // Fetch Todos
-      // .addCase(fetchTodos.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = null;
-      // })
-      // .addCase(fetchTodos.fulfilled, (state, action: PayloadAction<Todo[]>) => {
-      //   state.todos = action.payload;
-      //   state.loading = false;
-      //   state.totalTodos = action.payload.length;
-      //   state.totalCompleted = action.payload.filter((t) => t.isCompleted).length;
-      //   state.totalPending = action.payload.filter((t) => !t.isCompleted).length;
-      // })
-      // .addCase(fetchTodos.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.error.message || 'Failed to fetch todos';
-      // })
-
-      // Fetch Todos by User ID
-      .addCase(fetchTodosByUserId.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(
         fetchTodosByUserId.fulfilled,
         (state, action: PayloadAction<Todo[]>) => {
-          state.userTodos = action.payload;
           state.loading = false;
-          state.totalTodos = action.payload.length;
-          state.totalCompleted = action.payload.filter(
-            (t) => t.isCompleted
-          ).length;
-          state.totalPending = action.payload.filter(
-            (t) => !t.isCompleted
-          ).length;
-          state.totalInBin = action.payload.filter(
-            (t) => t.isRemoved
-          ).length;
+          state.userTodos = action.payload;
         }
       )
-      .addCase(fetchTodosByUserId.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to fetch user todos";
-      })
-
-      // Create Todo
       .addCase(createTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
-        state.todos.push(action.payload);
-        state.userTodos.push(action.payload);
-        state.totalTodos += 1;
-        if (action.payload.isCompleted) {
-          state.totalCompleted += 1;
-        } else {
-          state.totalPending += 1;
-        }
+        state.todos.push(action.payload); // Add to global list if applicable
+        state.userTodos.push(action.payload); // Add to user-specific list
       })
-
-      // Update Todo
-      .addCase(updateTodo.fulfilled, (state, action) => {
-        const { id, data } = action.payload;
+      .addCase(updateTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+        const updatedTodo = action.payload;
 
         const updateArray = (arr: Todo[]) => {
-          const index = arr.findIndex((t) => t.id === id);
-
+          const index = arr.findIndex((t) => t.id === updatedTodo.id);
           if (index !== -1) {
-            const wasComplete = arr[index].isCompleted;
-            const isNowComplete = data.isCompleted;
-
-            arr[index] = {
-              ...arr[index],
-              ...data,
-            };
-
-            if (wasComplete !== isNowComplete) {
-              if (isNowComplete) {
-                state.totalCompleted += 1;
-                state.totalPending -= 1;
-              } else {
-                state.totalCompleted -= 1;
-                state.totalPending += 1;
-              }
-            }
+            arr[index] = updatedTodo; // Replace with the full updated object
           }
         };
-        updateArray(state.todos);
-        updateArray(state.userTodos);
+
+        updateArray(state.todos); // Update global list (if used)
+        updateArray(state.userTodos); // Update user-specific list
       })
-
-      // Delete Todo
       .addCase(deleteTodo.fulfilled, (state, action: PayloadAction<number>) => {
-        const deleted = state.todos.find((t) => t.id === action.payload);
-        state.todos = state.todos.filter((t) => t.id !== action.payload);
+        const deletedTodoId = action.payload;
 
-        if (deleted) {
-          state.totalTodos -= 1;
-          if (deleted.isCompleted) {
-            state.totalCompleted -= 1;
-          } else {
-            state.totalPending -= 1;
-          }
-        }
+        const filterArray = (arr: Todo[]) => arr.filter((t) => t.id !== deletedTodoId);
+
+        state.todos = filterArray(state.todos); // Remove from global list (if used)
+        state.userTodos = filterArray(state.userTodos); // Remove from user-specific list
       });
   },
 });
 
-// Export the reducer and actions
+// Export actions and reducer
 export const { clearTodos } = todosSlice.actions;
 export default todosSlice.reducer;
