@@ -46,13 +46,14 @@ const Bin = () => {
     const response = await dispatch(deleteTodo(updatePayload));
     if (response.meta.requestStatus === "fulfilled") {
       console.log("Item is deleted successfully!");
+      return response;
     }
   };
 
   return (
     <div className="removed-todos-in-bin-wrapper w-full h-full py-2 flex flex-col items-center gap-2 overflow-y-scroll ">
       {filteredTodos.map((todo) => (
-        <div className="todo-item-container bg-gray-200 flex justify-between items-center w-2/3 h-10 p-2 rounded-sm">
+        <div key={todo.id} className="todo-item-container bg-gray-200 flex justify-between items-center w-2/3 h-10 p-2 rounded-sm">
           <div className="item w-4/6 text-black">{todo.todo}</div>
           <div className="item-actions flex justify-evenly items-center gap-2">
             <Button

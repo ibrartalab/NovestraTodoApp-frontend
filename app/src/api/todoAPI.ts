@@ -6,6 +6,11 @@ export const getTodos = async(axiosPrivate:AxiosInstance) => {
     const response = await axiosPrivate.get("/Todo/all");
     return response;
 };
+// Function to get todos by user ID for a specific user
+export const getTodosByUserId = async(payload:FetchTodosByUserIdPayload) => {
+    const response = await payload.axiosPrivate.get(`/Todo/${payload.userId}`);
+    return response.data;
+};
 // Function to get a todo by ID
 export const addTodo = async(payload:CreateToDoPayload) => {
     const response = await payload.axiosPrivate.post("/Todo", payload.newTodo);
@@ -23,8 +28,4 @@ export const deleteTodo = async(payload:DeleteTodoPayload) => {
     return response.data;
 };
 
-// Function to get todos by user ID for a specific user
-export const getTodosByUserId = async(payload:FetchTodosByUserIdPayload) => {
-    const response = await payload.axiosPrivate.get(`/Todo/${payload.userId}`);
-    return response.data;
-};
+
