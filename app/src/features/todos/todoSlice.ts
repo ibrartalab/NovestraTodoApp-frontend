@@ -1,4 +1,3 @@
-// src/feature/todos/todosSlice.ts
 import {
   createSlice,
   createAsyncThunk,
@@ -107,7 +106,7 @@ const todosSlice = createSlice({
       state.totalCompleted = 0;
       state.totalPending = 0;
       state.totalInBin = 0;
-      state.error = null; // Clear error on clear
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -130,8 +129,8 @@ const todosSlice = createSlice({
         }
       )
       .addCase(createTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
-        state.todos.push(action.payload); // Add to global list if applicable
-        state.userTodos.push(action.payload); // Add to user-specific list
+        state.todos.push(action.payload);
+        state.userTodos.push(action.payload);
         state.totalTodos += 1;
 
         if (action.payload.isCompleted) {
@@ -162,13 +161,11 @@ const todosSlice = createSlice({
                 state.totalPending -= 1;
               }
             }
-
-            
           }
         };
 
-        updateArray(state.todos); // Update global list (if used)
-        updateArray(state.userTodos); // Update user-specific list
+        updateArray(state.todos); 
+        updateArray(state.userTodos); 
       })
       .addCase(deleteTodo.fulfilled, (state, action) => {
         const deleted = state.userTodos.find((t) => t.id == action.payload);
@@ -178,14 +175,13 @@ const todosSlice = createSlice({
 
         if (deleted) {
           state.totalTodos -= 1;
-          state.totalInBin -=1;
+          state.totalInBin -= 1;
           if (deleted.isCompleted) {
             state.totalCompleted -= 1;
           } else {
             state.totalPending -= 1;
           }
         }
-        
       });
   },
 });
